@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore", "NCore\NCore.csproj", "{4356C472-CD74-419D-83FE-96D50D196CB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.NHibernate", "NCore.NHibernate\NCore.NHibernate.csproj", "{41710B37-3D17-4163-89D1-BBE8CB531F6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.NHibernate.Postgre", "NCore.NHibernate.Postgre\NCore.NHibernate.Postgre.csproj", "{3A004C49-6A63-402D-9F67-3C11ACD4A3B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Tests", "NCore.Tests\NCore.Tests.csproj", "{B29908F6-4B5A-4327-B684-C77E82B911A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.TestApp", "NCore.TestApp\NCore.TestApp.csproj", "{CF7A49A7-4772-478E-B46C-26FBEFB2F961}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4356C472-CD74-419D-83FE-96D50D196CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4356C472-CD74-419D-83FE-96D50D196CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4356C472-CD74-419D-83FE-96D50D196CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4356C472-CD74-419D-83FE-96D50D196CB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41710B37-3D17-4163-89D1-BBE8CB531F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41710B37-3D17-4163-89D1-BBE8CB531F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41710B37-3D17-4163-89D1-BBE8CB531F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41710B37-3D17-4163-89D1-BBE8CB531F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A004C49-6A63-402D-9F67-3C11ACD4A3B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A004C49-6A63-402D-9F67-3C11ACD4A3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A004C49-6A63-402D-9F67-3C11ACD4A3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A004C49-6A63-402D-9F67-3C11ACD4A3B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B29908F6-4B5A-4327-B684-C77E82B911A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B29908F6-4B5A-4327-B684-C77E82B911A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B29908F6-4B5A-4327-B684-C77E82B911A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B29908F6-4B5A-4327-B684-C77E82B911A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

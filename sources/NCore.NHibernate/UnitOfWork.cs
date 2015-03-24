@@ -8,25 +8,24 @@ namespace NCore.NHibernate
         private readonly ISessionFactory _sessionFactory;
         private readonly IAppScope _scope;
         private ITransaction _transaction;
-        private ISession _session;
 
-        public ISession Session { get { return _session; } }
+        public ISession Session { get; private set; }
 
         public UnitOfWork(ISessionFactory sessionFactory, IAppScope scope)
         {
             _sessionFactory = sessionFactory;
+            _scope = scope;
+            Session = _sessionFactory.OpenSession();
 
             var cb = new ContainerBuilder();
-            cb.RegisterInstance(this).As<IUnitOfWork>().As<INhUnitOfWork>().AsSelf().SingleInstance();
-            scope.Update(cb);
-            _scope = scope;
+            cb.RegisterInstance(Session).As<ISession>().SingleInstance();
+            _scope.Update(cb);
 
-            _session = _sessionFactory.OpenSession();
         }
 
         public void BeginTransaction()
         {
-            _transaction = _session.BeginTransaction();
+            _transaction = Session.BeginTransaction();
         }
 
         public void Commit()
@@ -45,9 +44,9 @@ namespace NCore.NHibernate
             {
                 _transaction.Dispose();
             }
-            if (_session != null)
+            if (Session != null)
             {
-                _session.Dispose();
+                Session.Dispose();
             }
             if (_scope != null)
             {

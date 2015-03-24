@@ -34,7 +34,7 @@ namespace NCore.NHibernate.Postgre
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>()
                                               .As<INhUnitOfWork>()
                                               .AsSelf()
-                                              .InstancePerLifetimeScope();
+                                              .InstancePerDependency();
 
             builder.RegisterGeneric(typeof(Repository<,>)).As(typeof(IRepository<,>));
         }

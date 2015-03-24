@@ -26,7 +26,7 @@ namespace NCore.TestApp
                 .Build();
 
             var service = _core.Resolve<ITestService>();
-            service.AddTestRecord("atatat");
+            service.AddTestRecord();
 
         }
 

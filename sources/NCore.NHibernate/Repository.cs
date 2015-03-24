@@ -8,9 +8,9 @@ namespace NCore.NHibernate
     {
         protected readonly ISession _session;
 
-        public Repository(INhUnitOfWork uow)
+        public Repository(ISession session)
         {
-            _session = uow.Session;
+            _session = session;
         }
 
         public IQueryable<TEntity> GetAll()

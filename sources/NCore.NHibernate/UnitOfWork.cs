@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using NHibernate;
-using System;
 
 namespace NCore.NHibernate
 {
@@ -16,7 +15,12 @@ namespace NCore.NHibernate
         public UnitOfWork(ISessionFactory sessionFactory, IAppScope scope)
         {
             _sessionFactory = sessionFactory;
+
+            var cb = new ContainerBuilder();
+            cb.RegisterInstance(this).As<IUnitOfWork>().As<INhUnitOfWork>().AsSelf().SingleInstance();
+            scope.Update(cb);
             _scope = scope;
+
             _session = _sessionFactory.OpenSession();
         }
 

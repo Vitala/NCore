@@ -80,6 +80,11 @@ namespace NCore
             return scope;
         }
 
+        public virtual void Update(ContainerBuilder cb)
+        {
+            cb.Update(Scope.ComponentRegistry);
+        }
+
         public virtual void Dispose()
         {
             if (Scope != null)

@@ -25,7 +25,7 @@ namespace NCore
             Instance = this;
         }
 
-        public void Update(ContainerBuilder cb)
+        public override void Update(ContainerBuilder cb)
         {
             /*
             if (_container == null)

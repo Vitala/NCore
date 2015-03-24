@@ -11,5 +11,7 @@ namespace NCore
         AppScope BeginScope(Action<ContainerBuilder> confAction);
         AppScope BeginScope(object tag);
         AppScope BeginScope(object tag, Action<ContainerBuilder> confAction);
+        void Update(ContainerBuilder cb);
     }
+
 }

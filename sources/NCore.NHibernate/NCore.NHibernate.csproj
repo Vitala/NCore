@@ -48,7 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="INhUnitOfWork.cs" />
+    <Compile Include="CurrentSessionProvider.cs" />
+    <Compile Include="ICurrentSessionProvider.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

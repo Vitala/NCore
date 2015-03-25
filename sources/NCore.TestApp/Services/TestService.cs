@@ -11,10 +11,13 @@ namespace NCore.TestApp.Services
     public class TestService : ITestService
     {
         private readonly Func<IUnitOfWork> _uowFactory;
+        private readonly Func<IRepository<TestEntity, int>> _repoFactory;
 
-        public TestService(Func<IUnitOfWork> uowFactory)
+        public TestService(Func<IUnitOfWork> uowFactory, Func<IRepository<TestEntity, int>> repoFactory)
         {
             _uowFactory = uowFactory;
+            _repoFactory = repoFactory;
+
         }
 
         public void AddTestRecord()
@@ -23,7 +26,7 @@ namespace NCore.TestApp.Services
             {
                 using (var uow = _uowFactory())
                 {
-                    var testRepo = uow.Repository<TestEntity, int>();
+                    var testRepo = _repoFactory();
                     uow.BeginTransaction();
                     testRepo.Insert(new TestEntity() { Name = "task 1" });
                     Thread.Sleep(5000);
@@ -34,7 +37,7 @@ namespace NCore.TestApp.Services
             {
                 using (var uow = _uowFactory())
                 {
-                    var testRepo = uow.Repository<TestEntity, int>();
+                    var testRepo = _repoFactory();
                     uow.BeginTransaction();
                     testRepo.Insert(new TestEntity() { Name = "task 2" });
                     Thread.Sleep(10000);

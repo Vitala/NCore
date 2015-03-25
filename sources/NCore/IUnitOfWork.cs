@@ -2,7 +2,7 @@
 
 namespace NCore
 {
-    public interface IUnitOfWork : IRepositoryFactory, IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         void BeginTransaction();
         void Commit();

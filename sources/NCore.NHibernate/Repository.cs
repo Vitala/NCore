@@ -8,14 +8,17 @@ namespace NCore.NHibernate
     {
         protected readonly ISession _session;
 
-        public Repository(ISession session)
+        public Repository(ICurrentSessionProvider currentSessionProvider)
         {
-            _session = session;
+            _session = currentSessionProvider.CurrentSession;
+            if (_session == null)
+                throw new NCoreException("Невозможно использовать репозиторий без контекста юнит-оф-ворк. Откройте новый юнит-оф-ворк перед созданием репозитория.");
         }
 
         public IQueryable<TEntity> GetAll()
         {
             return _session.Query<TEntity>();
+            
         }
 
         public TEntity Get(TPrimaryKey key)

@@ -1,31 +1,26 @@
-﻿using Autofac;
-using NHibernate;
+﻿using NHibernate;
+using System;
 
 namespace NCore.NHibernate
 {
-    public class UnitOfWork : INhUnitOfWork, IRepositoryFactory
+    public class UnitOfWork : IUnitOfWork
     {
-        private readonly ISessionFactory _sessionFactory;
-        private readonly IAppScope _scope;
+        private readonly ISession _session;
         private ITransaction _transaction;
+        private readonly ICurrentSessionProvider _currentSessionProvider;
 
-        public ISession Session { get; private set; }
-
-        public UnitOfWork(ISessionFactory sessionFactory, IAppScope scope)
+        public UnitOfWork(ICurrentSessionProvider currentSessionProvider)
         {
-            _sessionFactory = sessionFactory;
-            _scope = scope;
-            Session = _sessionFactory.OpenSession();
-
-            var cb = new ContainerBuilder();
-            cb.RegisterInstance(Session).As<ISession>().SingleInstance();
-            _scope.Update(cb);
-
+            _currentSessionProvider = currentSessionProvider;
+            _session = currentSessionProvider.OpenSession();
+#if DEBUG
+            _session.FlushMode = FlushMode.Commit;
+#endif
         }
 
         public void BeginTransaction()
         {
-            _transaction = Session.BeginTransaction();
+           _transaction =_session.BeginTransaction();
         }
 
         public void Commit()
@@ -38,25 +33,29 @@ namespace NCore.NHibernate
             _transaction.Rollback();
         }
 
+        private bool disposed = false;
         public void Dispose()
         {
-            if (_transaction != null)
+            if (!disposed)
             {
-                _transaction.Dispose();
-            }
-            if (Session != null)
-            {
-                Session.Dispose();
-            }
-            if (_scope != null)
-            {
-                _scope.Dispose();
-            }
-        }
+                _currentSessionProvider.Dispose();
 
-        public IRepository<TEntity, TPrimaryKey> Repository<TEntity, TPrimaryKey>() where TEntity : Entity<TPrimaryKey>
-        {
-            return _scope.Resolve<IRepository<TEntity, TPrimaryKey>>();
+                if (_session != null && _session.IsOpen)
+                {
+                    try
+                    {
+                        if (_transaction != null && _transaction.IsActive)
+                        {
+                            _transaction.Rollback();
+                        }
+                    }
+                    finally
+                    {
+                        _session.Dispose();
+                        disposed = true;
+                    }
+                }
+            }
         }
     }
 }

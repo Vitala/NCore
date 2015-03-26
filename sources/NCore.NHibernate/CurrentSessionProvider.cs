@@ -1,41 +1,23 @@
 ﻿using NHibernate;
-using NHibernate.Context;
-using System;
+using NCore.NHibernate.Domain;
 
 namespace NCore.NHibernate
 {
     public class CurrentSessionProvider : ICurrentSessionProvider
     {
-        private ISessionFactory _sessionFactory;
-
-        public CurrentSessionProvider(ISessionFactory sessionFactory)
-        {
-            _sessionFactory = sessionFactory;
-        }
-
-        public ISession OpenSession()
-        {
-            var session = _sessionFactory.OpenSession();
-            CurrentSessionContext.Bind(session);
-            return session;
-        }
-
-        public void Dispose()
-        {
-            CurrentSessionContext.Unbind(_sessionFactory);
-        }
+        private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;
 
         public ISession CurrentSession
         {
             get
             {
-                if (!CurrentSessionContext.HasBind(_sessionFactory))
-                {
-                    return null;
-                }
-                var contextualSession = _sessionFactory.GetCurrentSession();
-                return contextualSession;
+                return _currentUnitOfWorkProvider.Current.GetSession();
             }
+        }
+
+        public CurrentSessionProvider(ICurrentUnitOfWorkProvider currentUnitOfWorkProvider)
+        {
+            _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
         }
     }
 }

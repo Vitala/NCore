@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace NCore
+namespace NCore.Kernel
 {
     public class AppCore: AppScope
     {
@@ -27,10 +27,9 @@ namespace NCore
 
         public override void Update(ContainerBuilder cb)
         {
-            /*
             if (_container == null)
-                throw new ZenCoreException("Ядро Zen.Core не получило IContaner при построении. Функционал не доступен.");
-             */
+                throw new NCoreException("Ядро NCore не получило IContaner при построении. Функционал не доступен.");
+
             cb.Update(_container);
         }
 

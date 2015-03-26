@@ -1,8 +1,9 @@
 ﻿using Autofac;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using NCore.Domain;
+using NCore.NHibernate.Domain;
 using NHibernate;
-using NHibernate.Context;
 using System.Reflection;
 using Configuration = NHibernate.Cfg.Configuration;
 using Module = Autofac.Module;
@@ -24,13 +25,13 @@ namespace NCore.NHibernate.Postgre
                             .Database(PostgreSQLConfiguration.Standard
                             .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
                             .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
-                            .CurrentSessionContext(typeof(CallSessionContext).FullName)
                             .BuildSessionFactory();
 
             builder.RegisterInstance(sessionFactory).As<ISessionFactory>().SingleInstance();
+            builder.RegisterType<CallContextCurrentUnitOfWorkProvider>().As<ICurrentUnitOfWorkProvider>();
             builder.RegisterType<CurrentSessionProvider>().As<ICurrentSessionProvider>();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-            builder.RegisterGeneric(typeof(Repository<,>)).As(typeof(IRepository<,>));
+            builder.RegisterType<NhUnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterGeneric(typeof(NhRepository<,>)).As(typeof(IRepository<,>));
         }
     }
 }

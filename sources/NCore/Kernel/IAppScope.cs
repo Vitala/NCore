@@ -1,7 +1,7 @@
 ﻿using System;
 using Autofac;
 
-namespace NCore
+namespace NCore.Kernel
 {
     public interface IAppScope : IDisposable
     {

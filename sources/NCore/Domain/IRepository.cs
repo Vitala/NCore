@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NCore
+namespace NCore.Domain
 {
     public interface IRepository
     {

@@ -1,8 +1,9 @@
 ﻿using Autofac;
-using System;
-using System.Reflection;
+using NCore.Kernel;
 using NCore.NHibernate.Postgre;
 using NCore.TestApp.Services;
+using System;
+using System.Reflection;
 
 namespace NCore.TestApp
 {

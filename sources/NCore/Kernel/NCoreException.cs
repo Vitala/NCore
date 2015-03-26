@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NCore
+namespace NCore.Kernel
 {
     public class NCoreException : Exception
     {

@@ -1,14 +1,16 @@
-﻿using NHibernate;
+﻿using NCore.Domain;
+using NCore.Kernel;
+using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
 
-namespace NCore.NHibernate
+namespace NCore.NHibernate.Domain
 {
-    public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
+    public class NhRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
         protected readonly ISession _session;
 
-        public Repository(ICurrentSessionProvider currentSessionProvider)
+        public NhRepository(ICurrentSessionProvider currentSessionProvider)
         {
             _session = currentSessionProvider.CurrentSession;
             if (_session == null)
@@ -18,7 +20,6 @@ namespace NCore.NHibernate
         public IQueryable<TEntity> GetAll()
         {
             return _session.Query<TEntity>();
-            
         }
 
         public TEntity Get(TPrimaryKey key)
@@ -40,6 +41,5 @@ namespace NCore.NHibernate
         {
             _session.Delete(_session.Load<TEntity>(id));
         }
-
     }
 }

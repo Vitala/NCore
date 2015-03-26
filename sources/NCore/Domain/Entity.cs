@@ -1,5 +1,5 @@
 ﻿
-namespace NCore
+namespace NCore.Domain
 {
     public class Entity<TPrimaryKey>: IEntity<TPrimaryKey>
     {

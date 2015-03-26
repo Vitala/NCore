@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Tests", "NCore.Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.TestApp", "NCore.TestApp\NCore.TestApp.csproj", "{CF7A49A7-4772-478E-B46C-26FBEFB2F961}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.EntityFramework", "NCore.EntityFramework\NCore.EntityFramework.csproj", "{D4A99918-E797-4F28-87AB-5D4E01BB7907}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A99918-E797-4F28-87AB-5D4E01BB7907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A99918-E797-4F28-87AB-5D4E01BB7907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A99918-E797-4F28-87AB-5D4E01BB7907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A99918-E797-4F28-87AB-5D4E01BB7907}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

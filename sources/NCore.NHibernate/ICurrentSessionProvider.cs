@@ -1,11 +1,9 @@
 ﻿using NHibernate;
-using System;
 
 namespace NCore.NHibernate
 {
-    public interface ICurrentSessionProvider : IDisposable
+    public interface ICurrentSessionProvider
     {
         ISession CurrentSession { get; }
-        ISession OpenSession();
     }
 }

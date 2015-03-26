@@ -1,8 +1,6 @@
-﻿using NCore.TestApp.Entities;
+﻿using NCore.Domain;
+using NCore.TestApp.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

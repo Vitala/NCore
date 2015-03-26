@@ -17,6 +17,7 @@ namespace NCore.EntityFramework.Domain
         {
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
             DbContext = dbContextFactory.CreateDbContext();
+            //TODO: check if unit of work already exists in current context. Prevent creating new unit of work if it already exists
             _currentUnitOfWorkProvider.Current = this;
         }
 
@@ -49,6 +50,7 @@ namespace NCore.EntityFramework.Domain
                 {
                     try
                     {
+                        //TODO: already committed/rolled back transaction throws an exception here
                         _transaction.Rollback();
                     }
                     finally

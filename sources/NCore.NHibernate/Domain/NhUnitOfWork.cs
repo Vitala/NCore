@@ -17,6 +17,7 @@ namespace NCore.NHibernate.Domain
         {
             _currentUnitOfWokProvider = currentUnitOfWokProvider;
             Session = sessionFactory.OpenSession();
+            //TODO: check if unit of work already exists in current context. Prevent creating new unit of work if it already exists
             _currentUnitOfWokProvider.Current = this;
         }
 

@@ -1,5 +1,6 @@
 ﻿using NCore.Domain;
 using NCore.EntityFramework.Infrastructure;
+using NCore.Kernel;
 using System.Data.Entity;
 using System.Linq;
 
@@ -13,6 +14,9 @@ namespace NCore.EntityFramework.Domain
         public EfRepository(ICurrentDbContextProvider currentDbContextProvider)
         {
             _context = currentDbContextProvider.CurrentContext;
+            if (_context == null)
+                throw new NCoreException("Невозможно использовать репозиторий без контекста юнит-оф-ворк. Откройте новый юнит-оф-ворк перед созданием репозитория.");
+            //TODO: make each method of repository transactional if _context == null. In that case repository can  be resolved without unit of work
             _set = _context.Set<TEntity>();
         }
 

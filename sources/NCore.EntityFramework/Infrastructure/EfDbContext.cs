@@ -17,7 +17,7 @@ namespace NCore.EntityFramework.Infrastructure
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //TODO: map all entity configurations from _assemblyMapper
+            modelBuilder.Configurations.AddFromAssembly(_assemblyMapper);
         }
 
         public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel)

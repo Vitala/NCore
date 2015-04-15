@@ -4,10 +4,6 @@ namespace NCore.NHibernate.Security.Model
 {
     public class User : NamedEntity
     {
-        public virtual SecurityInfo SecurityInfo
-        {
-            get { return new SecurityInfo(Name, Id); }
-        }
     }
 
     public class UserMap : ClassMap<User>

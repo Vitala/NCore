@@ -20,7 +20,7 @@ namespace NCore.TestApp.Entities
         }
     }
 
-    public class TestEntity : Entity<int>
+    public class TestEntity : Entity<int>, IEntityInformationExtractor<TestEntity>
     {
         public virtual string Name { get; set; }
         public virtual Guid SecurityKey { get; set; }

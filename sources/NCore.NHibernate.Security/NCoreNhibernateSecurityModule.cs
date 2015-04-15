@@ -8,10 +8,8 @@ namespace NCore.NHibernate.Security
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SecurityCore>().AsSelf().SingleInstance();
             builder.RegisterType<AuthorizationRepository>().As<IAuthorizationRepository>();
             builder.RegisterType<AuthorizationService>().As<IAuthorizationService>();
-            // builder.RegisterType<PermissionsService>().As<IPermissionsService>();
             builder.RegisterType<PermissionsBuilderService>().As<IPermissionsBuilderService>();
         }
     }

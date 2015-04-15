@@ -5,6 +5,7 @@ using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NCore.NHibernate.Security.Helpers;
 
 namespace NCore.NHibernate.Security.Services
 {
@@ -248,7 +249,7 @@ namespace NCore.NHibernate.Security.Services
             _session.Delete(group);
         }
 
-        public virtual EntitiesGroup[] GetAncestryAssociationOfEntity<TEntity>(TEntity entity, string entityGroupName) where TEntity : class
+        public virtual EntitiesGroup[] GetAncestryAssociationOfEntity<TEntity>(TEntity entity, string entityGroupName) where TEntity : IEntityInformationExtractor<TEntity>
         {
             var desiredGroup = GetEntitiesGroupByName(entityGroupName);
             ICollection<EntitiesGroup> directGroups =
@@ -312,7 +313,7 @@ namespace NCore.NHibernate.Security.Services
                 .UniqueResult<EntitiesGroup>();
         }
 
-        public virtual EntitiesGroup[] GetAssociatedEntitiesGroupsFor<TEntity>(TEntity entity) where TEntity : class
+        public virtual EntitiesGroup[] GetAssociatedEntitiesGroupsFor<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
             var entitiesGroups =
                 SecurityCriterions.AllGroups(entity)
@@ -324,7 +325,7 @@ namespace NCore.NHibernate.Security.Services
             return entitiesGroups.ToArray();
         }
 
-        public virtual void AssociateEntityWith<TEntity>(TEntity entity, string groupName) where TEntity : class
+        public virtual void AssociateEntityWith<TEntity>(TEntity entity, string groupName) where TEntity : IEntityInformationExtractor<TEntity>
         {
             var entitiesGroup = GetEntitiesGroupByName(groupName);
             if (entitiesGroup == null)
@@ -333,21 +334,21 @@ namespace NCore.NHibernate.Security.Services
             AssociateEntityWith(entity, entitiesGroup);
         }
 
-        public void AssociateEntityWith<TEntity>(TEntity entity, EntitiesGroup entitiesGroup) where TEntity : class
+        public void AssociateEntityWith<TEntity>(TEntity entity, EntitiesGroup entitiesGroup) where TEntity : IEntityInformationExtractor<TEntity>
         {
-            var key = SecurityCore.Instance.ExtractKey(entity);
+            var key = entity.SecurityKey;
 
             var reference = GetOrCreateEntityReference<TEntity>(key);
             entitiesGroup.Entities.Add(reference);
         }
 
-        public void DetachEntityFromGroup<TEntity>(TEntity entity, string entitiesGroupName) where TEntity : class
+        public void DetachEntityFromGroup<TEntity>(TEntity entity, string entitiesGroupName) where TEntity : IEntityInformationExtractor<TEntity>
         {
             var entitiesGroup = GetEntitiesGroupByName(entitiesGroupName);
             if (entitiesGroup == null)
                 throw new InvalidOperationException(String.Format("Группа сущностей '{0}' не найдена", entitiesGroupName));
 
-            var key = SecurityCore.Instance.ExtractKey(entity);
+            var key = entity.SecurityKey;
 
             EntityReference reference = GetOrCreateEntityReference<TEntity>(key);
             entitiesGroup.Entities.Remove(reference);
@@ -489,9 +490,9 @@ namespace NCore.NHibernate.Security.Services
             return FindResults(criteria);
         }
 
-        public Permission[] GetPermissionsFor<TEntity>(User user, TEntity entity) where TEntity : class
+        public Permission[] GetPermissionsFor<TEntity>(User user, TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
-            var key = SecurityCore.Instance.ExtractKey(entity);
+            var key = entity.SecurityKey;
             var entitiesGroups = GetAssociatedEntitiesGroupsFor(entity);
 
             var criteria = DetachedCriteria.For<Permission>()
@@ -503,9 +504,9 @@ namespace NCore.NHibernate.Security.Services
             return FindResults(criteria);
         }
 
-        public Permission[] GetPermissionsFor<TEntity>(User user, TEntity entity, string operationName) where TEntity : class
+        public Permission[] GetPermissionsFor<TEntity>(User user, TEntity entity, string operationName) where TEntity : IEntityInformationExtractor<TEntity>
         {
-            var key = SecurityCore.Instance.ExtractKey(entity);
+            var key = entity.SecurityKey;
             var operationNames = Strings.GetHierarchicalOperationNames(operationName);
             var entitiesGroups = GetAssociatedEntitiesGroupsFor(entity);
 
@@ -526,12 +527,12 @@ namespace NCore.NHibernate.Security.Services
             return FindResults(criteria);
         }
 
-        public Permission[] GetPermissionsFor<TEntity>(TEntity entity) where TEntity : class
+        public Permission[] GetPermissionsFor<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
             if (entity is User)
                 return GetPermissionsFor(entity as User);
 
-            var key = SecurityCore.Instance.ExtractKey(entity);
+            var key = entity.SecurityKey;
             var groups = GetAssociatedEntitiesGroupsFor(entity);
             var criteria = DetachedCriteria.For<Permission>()
                 .Add(Expression.Eq("EntitySecurityKey", key) || Expression.In("EntitiesGroup", groups));

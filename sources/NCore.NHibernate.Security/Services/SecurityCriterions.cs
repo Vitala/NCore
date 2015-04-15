@@ -1,4 +1,5 @@
-﻿using NCore.NHibernate.Security.Model;
+﻿using NCore.NHibernate.Security.Interfaces;
+using NCore.NHibernate.Security.Model;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
 using System;
@@ -11,12 +12,12 @@ namespace NCore.NHibernate.Security.Services
         {
             return DetachedCriteria.For<UsersGroup>()
                 .CreateAlias("Users", "user")
-                .Add(Expression.Eq("user.id", user.SecurityInfo.Identifier));
+                .Add(Expression.Eq("user.id", user.Id));
         }
 
-        public static DetachedCriteria DirectEntitiesGroups<TEntity>(TEntity entity) where TEntity : class
+        public static DetachedCriteria DirectEntitiesGroups<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
-            Guid key = SecurityCore.Instance.ExtractKey(entity);
+            Guid key = entity.SecurityKey;
             return DetachedCriteria.For<EntitiesGroup>()
                 .CreateAlias("Entities", "e")
                 .Add(Expression.Eq("e.EntitySecurityKey", key));
@@ -32,16 +33,16 @@ namespace NCore.NHibernate.Security.Services
                                                         .CreateAlias("AllChildren", "child", JoinType.LeftOuterJoin)
                                                         .Add(
                                                              Subqueries.PropertyIn("child.id", directGroupsCriteria) ||
-                                                             Expression.Eq("user.id", user.SecurityInfo.Identifier))
+                                                             Expression.Eq("user.id", user.Id))
                                         .SetProjection(Projections.Id());
 
             return DetachedCriteria.For<UsersGroup>()
                                     .Add(Subqueries.PropertyIn("Id", criteria));
         }
 
-        public static DetachedCriteria AllGroups<TEntity>(TEntity entity) where TEntity : class
+        public static DetachedCriteria AllGroups<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
-            var key = SecurityCore.Instance.ExtractKey(entity);
+            var key = entity.SecurityKey;
             var directGroupsCriteria = DirectEntitiesGroups(entity)
                 .SetProjection(Projections.Id());
 

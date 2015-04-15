@@ -57,7 +57,6 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Entities\ITestRepository.cs" />
     <Compile Include="Entities\TestEntity.cs" />
-    <Compile Include="Entities\TestEntitySecurityInformationExtractor.cs" />
     <Compile Include="Entities\TestRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -48,48 +48,71 @@ namespace NCore.TestApp.Services
 
         public void AddTestRecord()
         {
+            
             var user = new User() { Name = "vasya" };
+            var user2 = new User() { Name = "petya" };
             var ent = new TestEntity() { Name = "test entity", SecurityKey = Guid.NewGuid() };
-
+            var ent2 = new TestEntity() { Name = "test entity2", SecurityKey = Guid.NewGuid() };
+            var ent3 = new TestEntity() { Name = "test entity3", SecurityKey = Guid.NewGuid() };
+             
             using (var uow = _uowFactory())
             {
                 uow.BeginTransaction();
                 var userRepo = _userRepoFactory();
                 var testRepo = _testEntityRepoFactory();
-                testRepo.Insert(ent);
-                userRepo.Insert(user);
-                uow.Commit();
+                
+                testRepo.Insert(ent); testRepo.Insert(ent2); testRepo.Insert(ent3);
+                userRepo.Insert(user); userRepo.Insert(user2);
+               
             
+                
+           var authRepo =  _authRepoFactory();
+              authRepo.CreateOperation("/TestRootOperation/TestOperation");
 
-            _authRepoFactory().CreateOperation("/TestRootOperation/TestOperation");
+             var eg=  authRepo.CreateEntitiesGroup("test entities");
 
-            _permBuilderFactory().Allow("/TestRootOperation/TestOperation")
+             authRepo.AssociateEntityWith<TestEntity>(ent, eg);
+             authRepo.AssociateEntityWith<TestEntity>(ent2, eg);
+                     uow.Commit();
+
+            _permBuilderFactory().Deny("/TestRootOperation/TestOperation")
                 .For(user)
-                .On<TestEntity>(ent)
+                .On(eg)
                 .DefaultLevel()
                 .Save();
 
-            var testEntities = _testEntityRepoFactory().GetAll();
+            _permBuilderFactory().Allow("/TestRootOperation/TestOperation")
+           .For(user2)
+           .On(eg)
+           .DefaultLevel()
+           .Save();
 
-                var perms = _permRepoFactory().GetAll();
-
-                var queryable = testEntities.Where(x =>
-                    perms
-                    .Where(y => y.Operation.Name == "/TestRootOperation/TestOperation" && (y.User == user) && y.Allow)
-                    .Select(y => y.EntitySecurityKey)
-                    .Contains(x.SecurityKey));
-
-                var res = ToSql(queryable);
                 /*
-                perms.Where(x=>x.Operation.Name == "/TestRootOperation/TestOperation" && (x.User == user)
-                    && x.EntitySecurityKey == ent.SecurityKey
-                    );
-
                 
+           var testEntities = _testEntityRepoFactory().GetAll();
 
-            var criteria = _testEntityRepoFactory().GetEntities();
-            _authService().AddPermissionsToQuery(user, "/TestRootOperation/TestOperation", criteria);
-            var str = criteria.List<TestEntity>(); */
+               var perms = _permRepoFactory().GetAll();
+
+               var queryable = testEntities.Where(x =>
+                   perms
+                   .Where(y => y.Operation.Name == "/TestRootOperation/TestOperation" && (y.User == user) && y.Allow)
+                   .Select(y => y.EntitySecurityKey)
+                   .Contains(x.SecurityKey));
+
+               var res = queryable.ToList();
+               
+               perms.Where(x=>x.Operation.Name == "/TestRootOperation/TestOperation" && (x.User == user)
+                   && x.EntitySecurityKey == ent.SecurityKey
+                   );
+
+                */
+
+
+           var criteria = _testEntityRepoFactory().GetEntities();
+
+           var aus = _authService();
+               aus.AddPermissionsToQuery(user2, "/TestRootOperation/TestOperation", criteria);
+           var str = criteria.List<TestEntity>(); 
             }
         }
 

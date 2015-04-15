@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NCore.NHibernate.Security
+namespace NCore.NHibernate.Security.Helpers
 {
     internal static class CollectionExtensions
     {

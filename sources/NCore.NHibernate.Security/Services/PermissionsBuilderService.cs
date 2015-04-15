@@ -61,10 +61,10 @@ namespace NCore.NHibernate.Security.Services
                 return this;
             }
 
-             public ILevelPermissionBuilder On<TEntity>(TEntity entity) where TEntity : class
+             public ILevelPermissionBuilder On<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
             {
                 _permission.SetEntityType(typeof(TEntity));
-                _permission.EntitySecurityKey = SecurityCore.Instance.ExtractKey(entity);
+                _permission.EntitySecurityKey = entity.SecurityKey;
                 return this;
             }
 

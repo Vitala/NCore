@@ -55,11 +55,10 @@ namespace NCore.TestApp
                     c.RegisterType<CurrentSessionProvider>().As<ICurrentSessionProvider>();
                     c.RegisterType<NhUnitOfWork>().As<IUnitOfWork>();
                     c.RegisterGeneric(typeof(NhRepository<,>)).As(typeof(IRepository<,>));
-                    c.RegisterType<TestEntitySecurityInformationExtractor>().As<IEntityInformationExtractor<TestEntity>>();
                     c.RegisterType<TestRepository>().As<ITestRepository>();
                 })
                 .Build();
-            var securityCore = _core.Resolve<SecurityCore>();
+
             var service = _core.Resolve<ITestService>();
             service.AddTestRecord();
 

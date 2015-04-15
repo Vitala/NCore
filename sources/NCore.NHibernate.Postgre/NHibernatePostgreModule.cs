@@ -20,14 +20,15 @@ namespace NCore.NHibernate.Postgre
         {
             var rawConfig = new Configuration();
             rawConfig.SetNamingStrategy(new PostgreSqlNamingStrategy());
-
-            var sessionFactory = Fluently.Configure(rawConfig)
+            
+              var sessionFactory = Fluently.Configure(rawConfig)
                             .Database(PostgreSQLConfiguration.Standard
                             .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
                             .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
                             .BuildSessionFactory();
-
+            
             builder.RegisterInstance(sessionFactory).As<ISessionFactory>().SingleInstance();
+            builder.Register(c => { return c.Resolve<ISessionFactory>().OpenSession(); }).As<ISession>();
             builder.RegisterType<CallContextCurrentUnitOfWorkProvider>().As<ICurrentUnitOfWorkProvider>();
             builder.RegisterType<CurrentSessionProvider>().As<ICurrentSessionProvider>();
             builder.RegisterType<NhUnitOfWork>().As<IUnitOfWork>();

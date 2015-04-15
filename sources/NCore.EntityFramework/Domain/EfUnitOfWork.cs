@@ -1,5 +1,6 @@
 ﻿using NCore.Domain;
 using NCore.EntityFramework.Infrastructure;
+using NCore.Kernel;
 using System.Data.Entity;
 
 namespace NCore.EntityFramework.Domain
@@ -17,7 +18,8 @@ namespace NCore.EntityFramework.Domain
         {
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
             DbContext = dbContextFactory.CreateDbContext();
-            //TODO: check if unit of work already exists in current context. Prevent creating new unit of work if it already exists
+            if (_currentUnitOfWorkProvider.Current != null)
+                throw new NCoreException("В текущем контексте уже открыт юнит-оф-ворк. Закройте его перед тем как открывать новый.");
             _currentUnitOfWorkProvider.Current = this;
         }
 
@@ -50,8 +52,8 @@ namespace NCore.EntityFramework.Domain
                 {
                     try
                     {
-                        //TODO: already committed/rolled back transaction throws an exception here
-                        _transaction.Rollback();
+                        if (_transaction.UnderlyingTransaction.Connection != null)
+                            _transaction.Rollback();
                     }
                     finally
                     {

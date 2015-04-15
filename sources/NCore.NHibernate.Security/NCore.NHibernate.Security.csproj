@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E3A568C3-25B9-4DAB-BAEC-6791F4444724}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NCore.NHibernate.Security</RootNamespace>
+    <AssemblyName>NCore.NHibernate.Security</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.4.0.0-alpha1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+Xamarin.iOS10+MonoTouch10\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthorizationInformation.cs" />
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Services\AuthorizationRepository.cs" />
+    <Compile Include="Services\AuthorizationService.cs" />
+    <Compile Include="Services\PermissionsBuilderService.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="UserMapper.cs" />
+    <Compile Include="Interfaces\IAuthorizationRepository.cs" />
+    <Compile Include="Interfaces\IAuthorizationService.cs" />
+    <Compile Include="Interfaces\IEntityInformationExtractor.cs" />
+    <Compile Include="Interfaces\ILevelPermissionBuilder.cs" />
+    <Compile Include="Interfaces\IForPermissionBuilder.cs" />
+    <Compile Include="Interfaces\IOnPermissionBuilder.cs" />
+    <Compile Include="Interfaces\IPermissionBuilder.cs" />
+    <Compile Include="Interfaces\IPermissionsBuilderService.cs" />
+    <Compile Include="Model\EntitiesGroup.cs" />
+    <Compile Include="Model\EntityReference.cs" />
+    <Compile Include="Model\EntityType.cs" />
+    <Compile Include="Model\NamedEntity.cs" />
+    <Compile Include="Model\Operation.cs" />
+    <Compile Include="Model\Permission.cs" />
+    <Compile Include="Model\UsersGroup.cs" />
+    <Compile Include="NCoreNhibernateSecurityModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityCore.cs" />
+    <Compile Include="SecurityInfo.cs" />
+    <Compile Include="Services\SecurityCriterions.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NCore.NHibernate\NCore.NHibernate.csproj">
+      <Project>{41710b37-3d17-4163-89d1-bbe8cb531f6d}</Project>
+      <Name>NCore.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NCore\NCore.csproj">
+      <Project>{4356c472-cd74-419d-83fe-96d50d196cb0}</Project>
+      <Name>NCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

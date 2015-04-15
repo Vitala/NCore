@@ -1,4 +1,5 @@
 ﻿using NCore.Domain;
+using NCore.Kernel;
 using NHibernate;
 using System;
 
@@ -10,15 +11,16 @@ namespace NCore.NHibernate.Domain
         public bool IsDisposed { get; private set; }
 
         private ITransaction _transaction;
-        private readonly ICurrentUnitOfWorkProvider _currentUnitOfWokProvider;
+        private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;
 
-        public NhUnitOfWork(ICurrentUnitOfWorkProvider currentUnitOfWokProvider,
+        public NhUnitOfWork(ICurrentUnitOfWorkProvider currentUnitOfWorkProvider,
                           ISessionFactory sessionFactory)
         {
-            _currentUnitOfWokProvider = currentUnitOfWokProvider;
+            _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
             Session = sessionFactory.OpenSession();
-            //TODO: check if unit of work already exists in current context. Prevent creating new unit of work if it already exists
-            _currentUnitOfWokProvider.Current = this;
+            if (_currentUnitOfWorkProvider.Current != null)
+                throw new NCoreException("В текущем контексте уже открыт юнит-оф-ворк. Закройте его перед тем как открывать новый.");
+            _currentUnitOfWorkProvider.Current = this;
         }
 
         public void BeginTransaction()
@@ -42,7 +44,7 @@ namespace NCore.NHibernate.Domain
         {
             if (!IsDisposed)
             {
-                _currentUnitOfWokProvider.Current = null;
+                _currentUnitOfWorkProvider.Current = null;
 
                 if (Session != null && Session.IsOpen)
                 {

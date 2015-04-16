@@ -5,6 +5,7 @@ namespace NCore.NHibernate.Security.Interfaces
     public interface IAuthorizationRepository
     {
         void RemoveUser(User user);
+
         UsersGroup CreateUsersGroup(string name);
         UsersGroup[] GetAssociatedUsersGroupFor(User user);
         UsersGroup GetUsersGroupByName(string groupName);

@@ -5,19 +5,44 @@ using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
 using System;
+using NCore.Domain;
+using System.Linq;
 
 namespace NCore.NHibernate.Security.Services
 {
     public class AuthorizationService : IAuthorizationService
     {
         private readonly IAuthorizationRepository _authorizationRepository;
+        private readonly IRepository<Permission, int> _permissionsRepository;
 
-        public AuthorizationService(IAuthorizationRepository authorizationRepository)
+        public AuthorizationService(IAuthorizationRepository authorizationRepository,
+                                    IRepository<Permission, int> permissionsRepository)
         {
             _authorizationRepository = authorizationRepository;
+            _permissionsRepository = permissionsRepository;
         }
 
         #region IAuthorizationService Members
+
+        public IQueryable<TEntity> AddPermissionsToQuery<TEntity>(User user, string operation, IQueryable<TEntity> query)
+            where TEntity : IEntityInformationExtractor<TEntity>
+        {
+            var permissionsQueryable = _permissionsRepository.GetAll();
+
+            return query.Where(x =>
+                   permissionsQueryable
+                   .Where(y => y.Operation.Name == operation &&
+                       (y.User == user || y.UsersGroup.Users.Contains(user) || y.UsersGroup.AllChildren.SelectMany(z => z.Users).Contains(user)) &&
+                       (y.EntitySecurityKey == x.SecurityKey || y.EntitiesGroup.Entities.Select(z => z.EntitySecurityKey).Contains(x.SecurityKey)) &&
+                       y.Allow).Any()
+                   );
+        }
+
+        public void AddPermissionsToQuery<TEntity>(UsersGroup usersGroup, string operation, IQueryable<TEntity> query)
+            where TEntity : IEntityInformationExtractor<TEntity>
+        {
+            throw new NotImplementedException();
+        }
 
         public void AddPermissionsToQuery(User user, string operation, ICriteria criteria)
         {

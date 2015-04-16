@@ -4,6 +4,8 @@ using FluentNHibernate.Cfg.Db;
 using NCore.Domain;
 using NCore.NHibernate.Domain;
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
+using System;
 using System.Reflection;
 using Configuration = NHibernate.Cfg.Configuration;
 using Module = Autofac.Module;
@@ -15,20 +17,24 @@ namespace NCore.NHibernate.Postgre
     {
         public string ConnectionStringKey { get; set; }
         public Assembly AssemblyMapper { get; set; }
+        public Action<FluentConfiguration> AfterConfigure { get; set; }
 
         protected override void Load(ContainerBuilder builder)
         {
             var rawConfig = new Configuration();
             rawConfig.SetNamingStrategy(new PostgreSqlNamingStrategy());
-            
-              var sessionFactory = Fluently.Configure(rawConfig)
-                            .Database(PostgreSQLConfiguration.Standard
-                            .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
-                            .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
-                            .BuildSessionFactory();
-            
+
+            var fluentConfiguration = Fluently.Configure(rawConfig)
+                          .Database(PostgreSQLConfiguration.PostgreSQL82
+                          .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
+                          .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
+                         .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false));
+
+            AfterConfigure(fluentConfiguration);
+
+            var sessionFactory = fluentConfiguration.BuildSessionFactory();
+
             builder.RegisterInstance(sessionFactory).As<ISessionFactory>().SingleInstance();
-            builder.Register(c => { return c.Resolve<ISessionFactory>().OpenSession(); }).As<ISession>();
             builder.RegisterType<CallContextCurrentUnitOfWorkProvider>().As<ICurrentUnitOfWorkProvider>();
             builder.RegisterType<CurrentSessionProvider>().As<ICurrentSessionProvider>();
             builder.RegisterType<NhUnitOfWork>().As<IUnitOfWork>();

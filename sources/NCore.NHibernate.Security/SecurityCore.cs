@@ -1,4 +1,5 @@
-﻿using NCore.NHibernate.Security.Model;
+﻿using FluentNHibernate.Cfg;
+using NCore.NHibernate.Security.Model;
 using NHibernate.Cfg;
 
 namespace NCore.NHibernate.Security
@@ -8,10 +9,10 @@ namespace NCore.NHibernate.Security
     /// </summary>
     public static class SecurityCore
     {
-        public static void Configure(Configuration cfg)
+        public static void Configure(FluentConfiguration cfg)
         {
-            cfg.AddAssembly(typeof(User).Assembly);
-            new UserMapper(cfg, typeof(User)).Map();
+            cfg.Mappings(x => x.FluentMappings.AddFromAssemblyOf<User>());
+            new UserMapper(cfg.BuildConfiguration(), typeof(User)).Map();
         }
     }
 }

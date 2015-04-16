@@ -1,15 +1,15 @@
-﻿using NCore.NHibernate.Security.Interfaces;
+﻿using NCore.Kernel;
+using NCore.NHibernate.Security.Helpers;
+using NCore.NHibernate.Security.Interfaces;
 using NCore.NHibernate.Security.Model;
 using NHibernate;
 using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NCore.NHibernate.Security.Helpers;
 
 namespace NCore.NHibernate.Security.Services
 {
-    //HACK: диспозабл не нужен, сессия управляется из вне
     public class AuthorizationRepository : IAuthorizationRepository
     {
         private readonly ISession _session;
@@ -17,21 +17,8 @@ namespace NCore.NHibernate.Security.Services
         public AuthorizationRepository(ICurrentSessionProvider currentSessionProvider)
         {
             _session = currentSessionProvider.CurrentSession;
-            /* HACK:
             if (_session == null)
                 throw new NCoreException("Невозможно использовать репозиторий без контекста юнит-оф-ворк. Откройте новый юнит-оф-ворк перед созданием репозитория.");
-             */
-        }
-
-        #region Группы пользователей
-
-        private static List<UsersGroup> Min(List<UsersGroup> first, List<UsersGroup> second)
-        {
-            if (first.Count == 0)
-                return second;
-            if (first.Count <= second.Count)
-                return first;
-            return second;
         }
 
         public void RemoveUser(User user)
@@ -50,6 +37,17 @@ namespace NCore.NHibernate.Security.Services
             _session.CreateQuery("delete Permission p where p.User = :user")
                 .SetEntity("user", user)
                 .ExecuteUpdate();
+        }
+
+        #region Группы пользователей
+
+        private static List<UsersGroup> Min(List<UsersGroup> first, List<UsersGroup> second)
+        {
+            if (first.Count == 0)
+                return second;
+            if (first.Count <= second.Count)
+                return first;
+            return second;
         }
 
         public virtual UsersGroup CreateUsersGroup(string name)
@@ -350,13 +348,13 @@ namespace NCore.NHibernate.Security.Services
 
             var key = entity.SecurityKey;
 
-            EntityReference reference = GetOrCreateEntityReference<TEntity>(key);
+            var reference = GetOrCreateEntityReference<TEntity>(key);
             entitiesGroup.Entities.Remove(reference);
         }
 
         private EntityReference GetOrCreateEntityReference<TEntity>(Guid key)
         {
-            EntityReference reference = _session.CreateCriteria<EntityReference>()
+            var reference = _session.CreateCriteria<EntityReference>()
                 .Add(Restrictions.Eq("EntitySecurityKey", key))
                 .SetCacheable(true)
                 .UniqueResult<EntityReference>();
@@ -372,7 +370,7 @@ namespace NCore.NHibernate.Security.Services
 
         private EntityType GetOrCreateEntityType<TEntity>()
         {
-            EntityType entityType = _session.CreateCriteria<EntityType>()
+            var entityType = _session.CreateCriteria<EntityType>()
                 .Add(Restrictions.Eq("Name", typeof(TEntity).FullName))
                 .SetCacheable(true)
                 .UniqueResult<EntityType>();
@@ -483,7 +481,7 @@ namespace NCore.NHibernate.Security.Services
         public Permission[] GetPermissionsFor(string operationName)
         {
             var operationNames = Strings.GetHierarchicalOperationNames(operationName);
-            DetachedCriteria criteria = DetachedCriteria.For<Permission>()
+            var criteria = DetachedCriteria.For<Permission>()
                 .CreateAlias("Operation", "op")
                 .Add(Restrictions.In("op.Name", operationNames));
 

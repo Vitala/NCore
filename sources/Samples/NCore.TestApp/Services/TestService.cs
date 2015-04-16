@@ -24,112 +24,89 @@ namespace NCore.TestApp.Services
         private readonly Func<IAuthorizationService> _authService;
         private readonly Func<IUnitOfWork> _uowFactory;
         private readonly Func<IRepository<User, int>> _userRepoFactory;
-        private readonly Func<IAuthorizationRepository> _authRepoFactory;
+        private readonly Func<IAuthorizationRepository> _authRepo;
         private readonly Func<IPermissionsBuilderService> _permBuilderFactory;
         private readonly Func<ITestRepository> _testEntityRepoFactory;
-        private readonly Func<IRepository<Permission, int>> _permRepoFactory;
 
         public TestService(Func<IUnitOfWork> uowFactory,
             Func<IRepository<User, int>> userRepoFactory,
-            Func<IAuthorizationService> authService, 
-            Func<IAuthorizationRepository> authRepoFactory,
+            Func<IAuthorizationService> authService,
+            Func<IAuthorizationRepository> authRepo,
             Func<IPermissionsBuilderService> permBuilderFactory,
-            Func<ITestRepository> testEntityRepoFactory,
-            Func<IRepository<Permission, int>> permRepoFactory)
+            Func<ITestRepository> testEntityRepoFactory)
         {
             _uowFactory = uowFactory;
             _userRepoFactory = userRepoFactory;
             _authService = authService;
-            _authRepoFactory = authRepoFactory;
+            _authRepo = authRepo;
             _permBuilderFactory = permBuilderFactory;
             _testEntityRepoFactory = testEntityRepoFactory;
-            _permRepoFactory = permRepoFactory;
         }
 
         public void AddTestRecord()
         {
-            
             var user = new User() { Name = "vasya" };
             var user2 = new User() { Name = "petya" };
             var ent = new TestEntity() { Name = "test entity", SecurityKey = Guid.NewGuid() };
             var ent2 = new TestEntity() { Name = "test entity2", SecurityKey = Guid.NewGuid() };
             var ent3 = new TestEntity() { Name = "test entity3", SecurityKey = Guid.NewGuid() };
-             
+
             using (var uow = _uowFactory())
             {
                 uow.BeginTransaction();
                 var userRepo = _userRepoFactory();
                 var testRepo = _testEntityRepoFactory();
-                
+                var authRepo = _authRepo();
+
                 testRepo.Insert(ent); testRepo.Insert(ent2); testRepo.Insert(ent3);
                 userRepo.Insert(user); userRepo.Insert(user2);
-               
-            
-                
-           var authRepo =  _authRepoFactory();
-              authRepo.CreateOperation("/TestRootOperation/TestOperation");
 
-             var eg=  authRepo.CreateEntitiesGroup("test entities");
+                authRepo.CreateOperation("/TestRootOperation/TestOperation");
 
-             authRepo.AssociateEntityWith<TestEntity>(ent, eg);
-             authRepo.AssociateEntityWith<TestEntity>(ent2, eg);
-                     uow.Commit();
+                var eg = authRepo.CreateEntitiesGroup("test entities");
 
-            _permBuilderFactory().Deny("/TestRootOperation/TestOperation")
-                .For(user)
-                .On(eg)
-                .DefaultLevel()
-                .Save();
+                authRepo.AssociateEntityWith<TestEntity>(ent, eg);
+                authRepo.AssociateEntityWith<TestEntity>(ent2, eg);
+                authRepo.CreateChildEntityGroupOf("test entities", "test ent child");
+                uow.Commit();
 
-            _permBuilderFactory().Allow("/TestRootOperation/TestOperation")
-           .For(user2)
-           .On(eg)
-           .DefaultLevel()
-           .Save();
+                _permBuilderFactory().Deny("/TestRootOperation/TestOperation")
+                    .For(user)
+                    .On(eg)
+                    .DefaultLevel()
+                    .Save();
 
-                /*
-                
-           var testEntities = _testEntityRepoFactory().GetAll();
-
-               var perms = _permRepoFactory().GetAll();
-
-               var queryable = testEntities.Where(x =>
-                   perms
-                   .Where(y => y.Operation.Name == "/TestRootOperation/TestOperation" && (y.User == user) && y.Allow)
-                   .Select(y => y.EntitySecurityKey)
-                   .Contains(x.SecurityKey));
-
-               var res = queryable.ToList();
-               
-               perms.Where(x=>x.Operation.Name == "/TestRootOperation/TestOperation" && (x.User == user)
-                   && x.EntitySecurityKey == ent.SecurityKey
-                   );
-
-                */
+                _permBuilderFactory().Allow("/TestRootOperation/TestOperation")
+               .For(user2)
+               .On(eg)
+               .DefaultLevel()
+               .Save();
 
 
-           var criteria = _testEntityRepoFactory().GetEntities();
 
-           var aus = _authService();
-               aus.AddPermissionsToQuery(user2, "/TestRootOperation/TestOperation", criteria);
-           var str = criteria.List<TestEntity>(); 
+                var testEntities = _testEntityRepoFactory().GetAll();
+
+                testEntities = _authService().AddPermissionsToQuery<TestEntity>(user2, "/TestRootOperation/TestOperation", testEntities);
+
+                var res = testEntities.ToList();
             }
         }
+        
+        public String ToSql(System.Linq.IQueryable queryable)
+        {
+            var sessionProperty = typeof(DefaultQueryProvider).GetProperty("Session", BindingFlags.NonPublic | BindingFlags.Instance);
+            var session = sessionProperty.GetValue(queryable.Provider, null) as ISession;
+            var sessionImpl = session.GetSessionImplementation();
+            var factory = sessionImpl.Factory;
+            var nhLinqExpression = new NhLinqExpression(queryable.Expression, factory);
+            var translatorFactory = new ASTQueryTranslatorFactory();
+            var translator = translatorFactory.CreateQueryTranslators(nhLinqExpression, null, false, sessionImpl.EnabledFilters, factory).First();
+            //in case you want the parameters as well
+            //var parameters = nhLinqExpression.ParameterValuesByName.ToDictionary(x => x.Key, x => x.Value.Item1);
 
-     public String ToSql(System.Linq.IQueryable queryable)
-    {
-        var sessionProperty = typeof(DefaultQueryProvider).GetProperty("Session", BindingFlags.NonPublic | BindingFlags.Instance);
-        var session = sessionProperty.GetValue(queryable.Provider, null) as ISession;
-        var sessionImpl = session.GetSessionImplementation();
-        var factory = sessionImpl.Factory;
-        var nhLinqExpression = new NhLinqExpression(queryable.Expression, factory);
-        var translatorFactory = new ASTQueryTranslatorFactory();
-        var translator = translatorFactory.CreateQueryTranslators(nhLinqExpression, null, false, sessionImpl.EnabledFilters, factory).First();
-       //in case you want the parameters as well
-       //var parameters = nhLinqExpression.ParameterValuesByName.ToDictionary(x => x.Key, x => x.Value.Item1);
-    
-       return translator.SQLString;
-   }
+            return translator.SQLString;
+        }
+
         public String GetGeneratedSql(ICriteria criteria)
         {
             var criteriaImpl = (CriteriaImpl)criteria;
@@ -140,5 +117,6 @@ namespace NCore.TestApp.Services
 
             return loader.SqlString.ToString();
         }
+        
     }
 }

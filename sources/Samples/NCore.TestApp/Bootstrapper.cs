@@ -5,7 +5,7 @@ using NCore.NHibernate.Postgre;
 using NCore.TestApp.Services;
 using NCore.Kernel;
 using NHibernate.Cfg;
-using NCore.NHibernate.Security;
+using NCore.Security.NHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -13,9 +13,9 @@ using NCore.NHibernate;
 using NCore.NHibernate.Domain;
 using NCore.Domain;
 using NHibernate.Tool.hbm2ddl;
-using NCore.NHibernate.Security.Model;
+using NCore.Security.NHibernate.Model;
 using NCore.TestApp.Entities;
-using NCore.NHibernate.Security.Interfaces;
+using NCore.Security.NHibernate.Interfaces;
 
 namespace NCore.TestApp
 {
@@ -37,7 +37,7 @@ namespace NCore.TestApp
            
                     }
                 })
-                .AddModule(new NCoreNhibernateSecurityModule())
+                .AddModule(new NCoreSecurityNHibernateModule())
                 .Configure(c => {
                     c.RegisterType<TestService>().As<ITestService>();
                     c.RegisterType<TestRepository>().As<ITestRepository>();

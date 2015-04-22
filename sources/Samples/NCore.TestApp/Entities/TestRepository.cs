@@ -1,5 +1,5 @@
 ﻿using NCore.NHibernate.Domain;
-using NCore.NHibernate.Security.Interfaces;
+using NCore.Security.NHibernate.Interfaces;
 using NHibernate;
 using System;
 using System.Collections.Generic;

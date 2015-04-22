@@ -1,6 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using NCore.Domain;
-using NCore.NHibernate.Security.Interfaces;
+using NCore.Security.NHibernate.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

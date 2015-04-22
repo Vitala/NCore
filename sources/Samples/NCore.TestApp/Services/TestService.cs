@@ -1,7 +1,8 @@
 ﻿using Autofac.Features.OwnedInstances;
 using NCore.Domain;
-using NCore.NHibernate.Security.Interfaces;
-using NCore.NHibernate.Security.Model;
+using NCore.Security.Model;
+using NCore.Security.NHibernate.Interfaces;
+using NCore.Security.NHibernate.Model;
 using NCore.TestApp.Entities;
 using NHibernate;
 using NHibernate.Hql.Ast.ANTLR;

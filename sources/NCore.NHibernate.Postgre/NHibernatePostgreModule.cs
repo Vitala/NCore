@@ -28,7 +28,8 @@ namespace NCore.NHibernate.Postgre
                           .Database(PostgreSQLConfiguration.PostgreSQL82
                           .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
                           .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
-                         .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false));
+                         //.ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true));
+                         .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(false, true, false));
 
             AfterConfigure(fluentConfiguration);
 
@@ -37,6 +38,7 @@ namespace NCore.NHibernate.Postgre
             builder.RegisterInstance(sessionFactory).As<ISessionFactory>().SingleInstance();
             builder.RegisterType<CallContextCurrentUnitOfWorkProvider>().As<ICurrentUnitOfWorkProvider>();
             builder.RegisterType<CurrentSessionProvider>().As<ICurrentSessionProvider>();
+            builder.RegisterType<RepositoryFactory>().As<IRepositoryFactory>();
             builder.RegisterType<NhUnitOfWork>().As<IUnitOfWork>();
             builder.RegisterGeneric(typeof(NhRepository<,>)).As(typeof(IRepository<,>));
         }

@@ -17,9 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Web", "NCore.Web\NCor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{AA7A2A80-53F6-41F9-8845-2B860C02016C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.NHibernate.Security", "NCore.NHibernate.Security\NCore.NHibernate.Security.csproj", "{E3A568C3-25B9-4DAB-BAEC-6791F4444724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Security.NHibernate", "NCore.Security.NHibernate\NCore.Security.NHibernate.csproj", "{E3A568C3-25B9-4DAB-BAEC-6791F4444724}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.TestApp", "Samples\NCore.TestApp\NCore.TestApp.csproj", "{CF7A49A7-4772-478E-B46C-26FBEFB2F961}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Web.MVC", "NCore.Web.MVC\NCore.Web.MVC.csproj", "{19D51298-1F3C-4CB7-B1DC-2799E0553852}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Security", "NCore.Security\NCore.Security.csproj", "{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF7A49A7-4772-478E-B46C-26FBEFB2F961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D51298-1F3C-4CB7-B1DC-2799E0553852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D51298-1F3C-4CB7-B1DC-2799E0553852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D51298-1F3C-4CB7-B1DC-2799E0553852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D51298-1F3C-4CB7-B1DC-2799E0553852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

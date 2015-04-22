@@ -17,9 +17,9 @@ namespace NCore.NHibernate.Domain
                           ISessionFactory sessionFactory)
         {
             _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
-            Session = sessionFactory.OpenSession();
             if (_currentUnitOfWorkProvider.Current != null)
                 throw new NCoreException("В текущем контексте уже открыт юнит-оф-ворк. Закройте его перед тем как открывать новый.");
+            Session = sessionFactory.OpenSession();
             _currentUnitOfWorkProvider.Current = this;
         }
 
@@ -57,7 +57,10 @@ namespace NCore.NHibernate.Domain
                     }
                     finally
                     {
-                        _transaction.Dispose();
+                        if (_transaction != null)
+                        {
+                            _transaction.Dispose();
+                        }
                         Session.Dispose();
                         IsDisposed = true;
                     }

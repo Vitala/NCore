@@ -36,7 +36,8 @@ namespace NCore.Security.NHibernate
 
             foreach (var persistentClass in _cfg.ClassMappings)
             {
-                if (persistentClass.MappedClass.Assembly != typeof(UserMap).Assembly)
+                if (persistentClass.MappedClass.Assembly != typeof(UserMap).Assembly
+                    && persistentClass.MappedClass.Assembly != typeof(User).Assembly)
                     continue;
 
                 foreach (var property in persistentClass.PropertyIterator)

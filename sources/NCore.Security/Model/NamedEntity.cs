@@ -1,6 +1,6 @@
 ﻿using NCore.Domain;
 
-namespace NCore.Security.NHibernate.Model
+namespace NCore.Security.Model
 {
     //TODO: реализовать кастомного поставщика методов equals и gethashcode
     public class NamedEntity : Entity<int>

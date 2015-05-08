@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
+using NCore.Security.Model;
 
 namespace NCore.Security.NHibernate.Model
 {

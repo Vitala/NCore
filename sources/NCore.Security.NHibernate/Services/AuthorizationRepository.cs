@@ -409,12 +409,50 @@ namespace NCore.Security.NHibernate.Services
             _session.Delete(operation);
         }
 
+        public virtual Operation CreateOperation(string operationName, string comment)
+        {
+            if (string.IsNullOrEmpty(operationName))
+                throw new ArgumentException("Имя операции не указано");
+            if (operationName[0] != '/')
+                throw new ArgumentException("Имя операции должно начинаться с '/'");
+            if (string.IsNullOrEmpty(comment))
+                throw new ArgumentException("Комментарий к операции не указан");
+
+            var exists = _session.QueryOver<Operation>()
+                                .Where(x => x.Name == operationName)
+                                .RowCount() > 0;
+            if (exists)
+                return null;
+
+            var op = new Operation { Name = operationName, Comment = comment };
+
+            var parentOperationName = Strings.GetParentOperationName(operationName);
+            if (parentOperationName != string.Empty)
+            {
+                var parentOperation = GetOperationByName(parentOperationName);
+                if (parentOperation == null)
+                    parentOperation = CreateOperation(parentOperationName);
+
+                op.Parent = parentOperation;
+                parentOperation.Children.Add(op);
+            }
+
+            _session.Save(op);
+            return op;
+        }
+
         public virtual Operation CreateOperation(string operationName)
         {
             if (string.IsNullOrEmpty(operationName))
                 throw new ArgumentException("Имя операции не указано");
             if (operationName[0] != '/')
                 throw new ArgumentException("Имя операции должно начинаться с '/'");
+
+            var exists = _session.QueryOver<Operation>()
+                                .Where(x=>x.Name == operationName)
+                                .RowCount() > 0;
+            if (exists)
+                return null;
 
             var op = new Operation { Name = operationName };
 
@@ -455,14 +493,24 @@ namespace NCore.Security.NHibernate.Services
             _session.Save(permission);
         }
 
-        public Permission[] GetPermissionsFor(User user)
+        public Permission[] GetPermissionsFor(User user, bool eager = false)
         {
             var criteria = DetachedCriteria.For<Permission>()
                 .Add(Expression.Eq("User", user)
                      || Subqueries.PropertyIn("UsersGroup.Id",
                                               SecurityCriterions.AllGroups(user).SetProjection(Projections.Id())));
 
-            return FindResults(criteria);
+            return FindResults(criteria, eager);
+        }
+
+        public Permission[] GetPermissionsFor(UsersGroup usersGroup, bool eager = false)
+        {
+            var criteria = DetachedCriteria.For<Permission>()
+                .Add(Expression.Eq("UsersGroup", usersGroup)
+                    || Subqueries.PropertyIn("UsersGroup.Id",
+                                             SecurityCriterions.AllUsersGroupParents(usersGroup).SetProjection(Projections.Id())));
+
+            return FindResults(criteria, eager);
         }
 
         public Permission[] GetGlobalPermissionsFor(User user, string operationName)
@@ -530,7 +578,7 @@ namespace NCore.Security.NHibernate.Services
         public Permission[] GetPermissionsFor<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
             if (entity is User)
-                return GetPermissionsFor(entity as User);
+                return GetPermissionsFor(entity as User, false);
 
             var key = entity.SecurityKey;
             var groups = GetAssociatedEntitiesGroupsFor(entity);
@@ -540,13 +588,19 @@ namespace NCore.Security.NHibernate.Services
             return FindResults(criteria);
         }
 
-        private Permission[] FindResults(DetachedCriteria criteria)
+        private Permission[] FindResults(DetachedCriteria criteria, bool eager = false)
         {
-            ICollection<Permission> permissions = criteria.GetExecutableCriteria(_session)
+            var criteriaQuery = criteria.GetExecutableCriteria(_session)
                 .AddOrder(Order.Desc("Level"))
                 .AddOrder(Order.Asc("Allow"))
-                .SetCacheable(true)
-                .List<Permission>();
+                .SetCacheable(true);
+
+            if (eager)
+                criteriaQuery = criteriaQuery
+                                    .SetFetchMode("Operation", FetchMode.Eager)
+                                    .SetFetchMode("UsersGroup", FetchMode.Eager);
+                
+            ICollection<Permission> permissions = criteriaQuery.List<Permission>();
             return permissions.ToArray();
         }
 

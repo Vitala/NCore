@@ -16,6 +16,20 @@ namespace NCore.Security.NHibernate.Services
                 .Add(Expression.Eq("user.id", user.Id));
         }
 
+        public static DetachedCriteria DirectUserGroupParents(UsersGroup usersGroup)
+        {
+            return DetachedCriteria.For<UsersGroup>()
+                .CreateAlias("DirectChildren", "child")
+                .Add(Expression.Eq("child.id", usersGroup.Id));
+        }
+
+        public static DetachedCriteria AllUsersGroupParents(UsersGroup usersGroup)
+        {
+            return DetachedCriteria.For<UsersGroup>()
+                .CreateAlias("AllChildren", "child")
+                .Add(Expression.Eq("child.id", usersGroup.Id));
+        }
+
         public static DetachedCriteria DirectEntitiesGroups<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>
         {
             Guid key = entity.SecurityKey;

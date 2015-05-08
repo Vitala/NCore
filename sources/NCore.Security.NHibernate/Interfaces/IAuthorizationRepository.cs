@@ -29,13 +29,15 @@ namespace NCore.Security.NHibernate.Interfaces
         EntitiesGroup[] GetAncestryAssociationOfEntity<TEntity>(TEntity entity, string entityGroupName) where TEntity : IEntityInformationExtractor<TEntity>;
         void RemoveEntitiesGroup(string entitesGroupName);
 
+        Operation CreateOperation(string operationName, string comment);
         Operation CreateOperation(string operationName);
         Operation GetOperationByName(string operationName);
         void RemoveOperation(string operationName);
 
         void SavePermission(Permission permission);
         void RemovePermission(Permission permission);
-        Permission[] GetPermissionsFor(User user);
+        Permission[] GetPermissionsFor(User user, bool eager = false);
+        Permission[] GetPermissionsFor(UsersGroup usersGroup, bool eager = false);
         Permission[] GetPermissionsFor<TEntity>(User user, TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>;
         Permission[] GetGlobalPermissionsFor(User user, string operationName);
         Permission[] GetPermissionsFor(string operationName);

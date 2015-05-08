@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
+using NCore.Security.Model;
 using System.Collections.Generic;
 
 namespace NCore.Security.NHibernate.Model
@@ -22,7 +23,7 @@ namespace NCore.Security.NHibernate.Model
             Table("Operations");
             Id(x => x.Id);
             Map(x => x.Comment);
-            Map(x => x.Name);
+            Map(x => x.Name).Unique();
             References(x => x.Parent).Column("Parent");
 
             HasMany(x => x.Children)

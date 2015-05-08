@@ -28,8 +28,8 @@ namespace NCore.NHibernate.Postgre
                           .Database(PostgreSQLConfiguration.PostgreSQL82
                           .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
                           .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
-                         //.ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true));
-                         .ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(false, true, false));
+                         .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true));
+                        //.ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(false, true, false));
 
             AfterConfigure(fluentConfiguration);
 

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>NCore.Security.NHibernate</id>
+    <version>1.0.0</version>
+    <authors>ООО Интегрикс</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Коллекция базовых моделей безопасности для проектов на базе NCore и ORM NHibernate</description>
+    <dependencies>
+      <dependency id="Autofac" version="3.5.0" />
+      <dependency id="NCore" version="1.0.0" />
+      <dependency id="NCore.Security" version="1.0.0" />
+      <dependency id="NCore.NHibernate" version="1.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NCore.Security.NHibernate\bin\Release\NCore.Security.NHibernate.dll" target="lib" />
+  </files>
+</package>

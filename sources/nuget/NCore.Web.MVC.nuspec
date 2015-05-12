@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>NCore.Web.MVC</id>
+    <version>1.0.0</version>
+    <authors>ООО Интегрикс</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Интеграция ядра NCore в проекты на базе ASP.Net MVC</description>
+    <dependencies>
+      <dependency id="Autofac" version="3.5.0" />
+      <dependency id="NCore" version="1.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NCore.Web.MVC\bin\Release\NCore.Web.MVC.dll" target="lib" />
+  </files>
+</package>

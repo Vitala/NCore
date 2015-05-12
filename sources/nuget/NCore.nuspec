@@ -7,7 +7,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Общие компоненты ядра NCore</description>
     <dependencies>
-      <dependency id="Autofac" version="3.5.0" />
+      <dependency id="Autofac" version="3.5" />
     </dependencies>
   </metadata>
   <files>

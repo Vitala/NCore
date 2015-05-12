@@ -7,10 +7,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Коллекция базовых компонентов для подключения БД PostreSQL с использованием NHibernate</description>
     <dependencies>
-      <dependency id="Autofac" version="3.5.0" />
-      <dependency id="FluentNHibernate" version="2.0.0" />
-      <dependency id="NCore" version="1.0.0" />
-      <dependency id="NCore.NHibernate" version="1.0.0" />
+      <dependency id="Autofac" version="3.5" />
+      <dependency id="FluentNHibernate" version="2.0" />
+      <dependency id="NCore" version="1.0" />
+      <dependency id="NCore.NHibernate" version="1.0" />
     </dependencies>
   </metadata>
   <files>

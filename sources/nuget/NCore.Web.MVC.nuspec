@@ -7,8 +7,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Интеграция ядра NCore в проекты на базе ASP.Net MVC</description>
     <dependencies>
-      <dependency id="Autofac" version="3.5.0" />
-      <dependency id="NCore" version="1.0.0" />
+      <dependency id="Autofac" version="3.5" />
+      <dependency id="Microsoft.AspNet.Mvc" version="4.0" />
+      <dependency id="NCore" version="1.0" />
     </dependencies>
   </metadata>
   <files>

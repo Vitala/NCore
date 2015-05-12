@@ -7,7 +7,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Коллекция базовых моделей безопасности для проектов на базе NCore</description>
     <dependencies>
-      <dependency id="NCore" version="1.0.0" />
+      <dependency id="NCore" version="1.0" />
     </dependencies>
   </metadata>
   <files>

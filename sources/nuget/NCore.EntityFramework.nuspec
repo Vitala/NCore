@@ -7,9 +7,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Коллекция базовых компонентов для подключения БД с использованием EntityFramework</description>
     <dependencies>
-      <dependency id="Autofac" version="3.5.0" />
-      <dependency id="EntityFramework" version="6.0.0" />
-      <dependency id="NCore" version="1.0.0" />
+      <dependency id="Autofac" version="3.5" />
+      <dependency id="EntityFramework" version="6.0" />
+      <dependency id="NCore" version="1.0" />
     </dependencies>
   </metadata>
   <files>

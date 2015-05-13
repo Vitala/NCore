@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>NCore.NHibernate</id>
+    <version>1.0.0</version>
+    <authors>ООО Интегрикс</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Коллекция базовых компонентов для подключения БД с использованием NHibernate</description>
+    <dependencies>
+      <dependency id="Autofac" version="3.5" />
+      <dependency id="NHibernate" version="4.0" />
+      <dependency id="NCore" version="1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NCore.NHibernate\bin\Release\NCore.NHibernate.dll" target="lib" />
+  </files>
+</package>

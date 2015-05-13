@@ -163,6 +163,28 @@ namespace NCore.Security.NHibernate.Services
             return usersGroups.ToArray();
         }
 
+        public virtual void MoveUsersGroupToGroup(string usersGroupName, string parentGroupName)
+        {
+            var parent = GetUsersGroupByName(parentGroupName);
+            if (parent == null)
+                throw new ArgumentException(String.Format("Родительская группа пользователей '{0}' не существует", parentGroupName));
+
+            var group = GetUsersGroupByName(usersGroupName);
+            if (group == null)
+                throw new ArgumentException(String.Format("Переносимая группа пользователей '{0}' не существует", parentGroupName));
+
+            if (group.AllChildren.Contains(parent))
+                throw new InvalidOperationException("Операция невозможна, т.к. переносимая группа является родителем цели");
+
+            group.AllParents.Clear();
+            group.Parent = parent;
+            group.AllParents.AddAll(parent.AllParents);
+            group.AllParents.Add(parent);
+
+            parent.DirectChildren.Add(group);
+            parent.AllChildren.Add(group);
+        }
+
         public virtual UsersGroup GetUsersGroupByName(string groupName)
         {
             return _session.CreateCriteria<UsersGroup>()
@@ -183,6 +205,18 @@ namespace NCore.Security.NHibernate.Services
         public void AssociateUserWith(User user, UsersGroup group)
         {
             group.Users.Add(user);
+        }
+
+        public void DetachUserFromGroup(string userName, string usersGroupName)
+        {
+            var group = GetUsersGroupByName(usersGroupName);
+            if (group == null)
+                throw new InvalidOperationException(String.Format("Группа пользователей '{0}' не найдена", usersGroupName));
+            var user = group.Users.FirstOrDefault(x => x.Name == userName);
+            if (user == null)
+                throw new InvalidOperationException(String.Format("Пользователь '{0}' не найден", userName));
+
+            group.Users.Remove(user);
         }
 
         public void DetachUserFromGroup(User user, string usersGroupName)

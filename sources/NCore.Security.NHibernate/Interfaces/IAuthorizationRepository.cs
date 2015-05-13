@@ -14,9 +14,11 @@ namespace NCore.Security.NHibernate.Interfaces
         void AssociateUserWith(User user, string groupName);
         void AssociateUserWith(User user, UsersGroup group);
         void DetachUserFromGroup(User user, string usersGroupName);
+        void DetachUserFromGroup(string userName, string usersGroupName);
         UsersGroup CreateChildUserGroupOf(string parentGroupName, string usersGroupName);
         UsersGroup[] GetAncestryAssociation(User user, string usersGroupName);
         void RemoveUsersGroup(string usersGroupName);
+        void MoveUsersGroupToGroup(string usersGroupName, string parentGroupName);
 
         EntitiesGroup CreateEntitiesGroup(string name);
         EntitiesGroup[] GetAssociatedEntitiesGroupsFor<TEntity>(TEntity entity) where TEntity : IEntityInformationExtractor<TEntity>;

@@ -25,6 +25,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Web.MVC", "NCore.Web.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.Security", "NCore.Security\NCore.Security.csproj", "{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C2CF6334-448F-4669-BD5D-3ECEDD4B4E14}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{A9F4DE8D-6EFC-4C9A-B38B-1234F3F25FAE}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\NCore.EntityFramework.nuspec = nuget\NCore.EntityFramework.nuspec
+		nuget\NCore.NHibernate.nuspec = nuget\NCore.NHibernate.nuspec
+		nuget\NCore.NHibernate.Postgre.nuspec = nuget\NCore.NHibernate.Postgre.nuspec
+		nuget\NCore.nuspec = nuget\NCore.nuspec
+		nuget\NCore.Security.NHibernate.nuspec = nuget\NCore.Security.NHibernate.nuspec
+		nuget\NCore.Security.nuspec = nuget\NCore.Security.nuspec
+		nuget\NCore.Web.MVC.nuspec = nuget\NCore.Web.MVC.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

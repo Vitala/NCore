@@ -1,4 +1,5 @@
-﻿using NCore.Security.NHibernate.Model;
+﻿using NCore.Security.Model;
+using NCore.Security.NHibernate.Model;
 
 namespace NCore.Security.NHibernate.Interfaces
 {

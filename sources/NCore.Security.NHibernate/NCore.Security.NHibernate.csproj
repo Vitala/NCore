@@ -60,7 +60,6 @@
     <Compile Include="UserMapper.cs" />
     <Compile Include="Interfaces\IAuthorizationRepository.cs" />
     <Compile Include="Interfaces\IAuthorizationService.cs" />
-    <Compile Include="Interfaces\IEntityInformationExtractor.cs" />
     <Compile Include="Interfaces\ILevelPermissionBuilder.cs" />
     <Compile Include="Interfaces\IForPermissionBuilder.cs" />
     <Compile Include="Interfaces\IOnPermissionBuilder.cs" />

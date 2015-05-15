@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\IEntityInformationExtractor.cs" />
     <Compile Include="Model\NamedEntity.cs" />
     <Compile Include="Model\UsersGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NCore.Security.NHibernate.Interfaces
+namespace NCore.Security.Model
 {
     public interface IEntityInformationExtractor<TEntity>
     {

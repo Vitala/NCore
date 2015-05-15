@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NCore\Properties\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Model\NamedEntity.cs" />
     <Compile Include="Model\UsersGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

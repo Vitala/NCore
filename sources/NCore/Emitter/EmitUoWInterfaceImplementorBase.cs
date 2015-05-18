@@ -35,7 +35,7 @@ namespace NCore.Emitter
                 .FirstOrDefault(m => m.Name == "Resolve" && m.IsGenericMethod);
 
             AssemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(AssemblymName), AssemblyBuilderAccess.Run);
-            ModuleBuilder = AssemblyBuilder.DefineDynamicModule(ModuleName, AssemblymName);
+            ModuleBuilder = AssemblyBuilder.DefineDynamicModule(ModuleName);
         }
 
         protected static String GetImplementerTypeName(Type uowInterface)

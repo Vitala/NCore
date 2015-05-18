@@ -21,7 +21,6 @@ namespace NCore.Tests
         public void TestMethod1()
         {
 
-            
         }
     }
 }

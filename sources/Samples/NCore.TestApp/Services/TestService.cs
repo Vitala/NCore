@@ -59,17 +59,20 @@ namespace NCore.TestApp.Services
                 var testRepo = _testEntityRepoFactory();
                 var authRepo = _authRepo();
 
-                testRepo.Insert(ent); testRepo.Insert(ent2); testRepo.Insert(ent3);
-                userRepo.Insert(user); userRepo.Insert(user2);
-
-                authRepo.CreateOperation("/TestRootOperation/TestOperation");
-
                 var eg = authRepo.CreateEntitiesGroup("test entities");
+                using (uow.BeginTransaction(TransactionCloseType.Auto))
+                {
+                    testRepo.Insert(ent); testRepo.Insert(ent2); testRepo.Insert(ent3);
+                    userRepo.Insert(user); userRepo.Insert(user2);
 
-                authRepo.AssociateEntityWith<TestEntity>(ent, eg);
-                authRepo.AssociateEntityWith<TestEntity>(ent2, eg);
-                authRepo.CreateChildEntityGroupOf("test entities", "test ent child");
-                uow.Commit();
+                    authRepo.CreateOperation("/TestRootOperation/TestOperation");
+
+                    authRepo.AssociateEntityWith<TestEntity>(ent, eg);
+                    authRepo.AssociateEntityWith<TestEntity>(ent2, eg);
+                    authRepo.CreateChildEntityGroupOf("test entities", "test ent child");
+
+                    uow.SaveChanges();
+                }
 
                 _permBuilderFactory().Deny("/TestRootOperation/TestOperation")
                     .For(user)

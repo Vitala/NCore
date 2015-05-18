@@ -1,67 +1,70 @@
 ﻿using NCore.Domain;
 using NCore.EntityFramework.Infrastructure;
 using NCore.Kernel;
+using System;
 using System.Data.Entity;
 
 namespace NCore.EntityFramework.Domain
 {
-    public class EfUnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IUnitOfWorkImplementation
     {
+        public IAppScope Scope { get; private set; }
+
         public IDbContext DbContext { get; private set; }
+        
         public bool IsDisposed { get; private set; }
 
-        private DbContextTransaction _transaction;
         private readonly ICurrentUnitOfWorkProvider _currentUnitOfWorkProvider;
 
-        public EfUnitOfWork(ICurrentUnitOfWorkProvider currentUnitOfWorkProvider,
-            IDbContextFactory dbContextFactory)
+        public EfUnitOfWork(IAppScope scope, ICurrentUnitOfWorkProvider uowProvider)
         {
-            _currentUnitOfWorkProvider = currentUnitOfWorkProvider;
-            DbContext = dbContextFactory.CreateDbContext();
+            if (scope == null)
+                throw new ArgumentNullException("scope");
+
+            if (uowProvider == null)
+                throw new ArgumentNullException("uowProvider");
+            
+            _currentUnitOfWorkProvider = uowProvider;
+
             if (_currentUnitOfWorkProvider.Current != null)
                 throw new NCoreException("В текущем контексте уже открыт юнит-оф-ворк. Закройте его перед тем как открывать новый.");
+
             _currentUnitOfWorkProvider.Current = this;
+
+            Scope = scope.BeginScope();
+
+            var dbContextFactory = Scope.Resolve<IDbContextFactory>();
+            if (dbContextFactory == null)
+                throw new NCoreException("Не удалось инициализировать UoW EF, не удалос получить фабрику контекста подключения");
+
+            DbContext = dbContextFactory.CreateDbContext();
         }
 
-
-        public void BeginTransaction()
+        public IRepositoryFactory RepositoryFactory
         {
-            _transaction = this.DbContext.BeginTransaction();
+            get { return Scope.Resolve<IRepositoryFactory>(); }
         }
 
-        public void Commit()
+        public ITransaction BeginTransaction(TransactionCloseType closeType = TransactionCloseType.Auto)
         {
-            this.DbContext.SaveChanges();
-            _transaction.Commit();
-            _transaction.Dispose();
+            return new EfTransaction(DbContext.BeginTransaction(), closeType);
         }
 
-        public void Rollback()
+        public void SaveChanges()
         {
-            _transaction.Rollback();
-            _transaction.Dispose();
+            DbContext.SaveChanges();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (!IsDisposed)
             {
                 _currentUnitOfWorkProvider.Current = null;
 
-                if (_transaction != null)
-                {
-                    try
-                    {
-                        if (_transaction.UnderlyingTransaction.Connection != null)
-                            _transaction.Rollback();
-                    }
-                    finally
-                    {
-                        _transaction.Dispose();
-                    }
-                }
-
                 this.DbContext.Dispose();
+
+                Scope.Dispose();
+
                 IsDisposed = true;
             }
         }

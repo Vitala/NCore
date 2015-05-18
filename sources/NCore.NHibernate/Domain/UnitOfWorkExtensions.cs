@@ -9,16 +9,13 @@ namespace NCore.NHibernate.Domain
         public static ISession GetSession(this IUnitOfWork unitOfWork)
         {
             if (unitOfWork == null)
-            {
                 throw new ArgumentNullException("unitOfWork");
-            }
 
-            if (!(unitOfWork is NhUnitOfWork))
-            {
+            var nhUnitOfWork = unitOfWork as NhUnitOfWork;
+            if (nhUnitOfWork == null)
                 throw new ArgumentException("Аргумент unitOfWork не является экземпляром типа " + typeof(NhUnitOfWork).FullName, "unitOfWork");
-            }
 
-            return (unitOfWork as NhUnitOfWork).Session;
+            return nhUnitOfWork.Session;
         }
     }
 }

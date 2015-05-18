@@ -56,6 +56,7 @@
     <Compile Include="..\NCore\Properties\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Domain\EfTransaction.cs" />
     <Compile Include="Domain\UnitOfWorkExtensions.cs" />
     <Compile Include="Infrastructure\CurrentDbContextProvider.cs" />
     <Compile Include="Infrastructure\DbContextFactoryBuilder.cs" />

@@ -9,16 +9,13 @@ namespace NCore.EntityFramework.Domain
         public static IDbContext GetContext(this IUnitOfWork unitOfWork)
         {
             if (unitOfWork == null)
-            {
                 throw new ArgumentNullException("unitOfWork");
-            }
 
-            if (!(unitOfWork is EfUnitOfWork))
-            {
+            var efUnitOfWork = unitOfWork as EfUnitOfWork;
+            if (efUnitOfWork == null)
                 throw new ArgumentException("Аргумент unitOfWork не является экземпляром типа " + typeof(EfUnitOfWork).FullName, "unitOfWork");
-            }
 
-            return (unitOfWork as EfUnitOfWork).DbContext;
+            return efUnitOfWork.DbContext;
         }
     }
 }

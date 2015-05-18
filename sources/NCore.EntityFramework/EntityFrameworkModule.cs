@@ -21,7 +21,7 @@ namespace NCore.EntityFramework.Infrastructure
             builder.RegisterInstance(dbContextFactory).As<IDbContextFactory>().SingleInstance();
             builder.RegisterType<CallContextCurrentUnitOfWorkProvider>().As<ICurrentUnitOfWorkProvider>();
             builder.RegisterType<CurrentDbContextProvider>().As<ICurrentDbContextProvider>();
-            builder.RegisterType<EfUnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<EfUnitOfWork>().As<IUnitOfWork>().As<IUnitOfWorkImplementation>();
             builder.RegisterGeneric(typeof(EfRepository<,>)).As(typeof(IRepository<,>));
         }
 

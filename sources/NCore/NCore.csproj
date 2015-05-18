@@ -45,6 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\ITransaction.cs" />
+    <Compile Include="Domain\IUnitOfWorkImplementation.cs" />
+    <Compile Include="Domain\TransactionBase.cs" />
+    <Compile Include="Domain\TransactionCloseType.cs" />
+    <Compile Include="Emitter\EmitUoWImplementerModule.cs" />
+    <Compile Include="Emitter\EmitUoWInterfaceImplementor.cs" />
+    <Compile Include="Emitter\EmitUoWInterfaceImplementorBase.cs" />
+    <Compile Include="Emitter\EmitUoWRegistrationHelper.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
     <Compile Include="Domain\IRepositoryFactory.cs" />
     <Compile Include="Domain\RepositoryFactory.cs" />

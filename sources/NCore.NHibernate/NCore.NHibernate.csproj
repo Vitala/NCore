@@ -55,6 +55,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="CurrentSessionProvider.cs" />
+    <Compile Include="Domain\NhTransaction.cs" />
     <Compile Include="ICurrentSessionProvider.cs" />
     <Compile Include="Domain\NhRepository.cs" />
     <Compile Include="Domain\NhUnitOfWork.cs" />

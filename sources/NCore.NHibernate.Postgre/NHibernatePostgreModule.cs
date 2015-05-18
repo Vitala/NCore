@@ -39,7 +39,7 @@ namespace NCore.NHibernate.Postgre
             builder.RegisterType<CallContextCurrentUnitOfWorkProvider>().As<ICurrentUnitOfWorkProvider>();
             builder.RegisterType<CurrentSessionProvider>().As<ICurrentSessionProvider>();
             builder.RegisterType<RepositoryFactory>().As<IRepositoryFactory>();
-            builder.RegisterType<NhUnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<NhUnitOfWork>().As<IUnitOfWork>().As<IUnitOfWorkImplementation>();
             builder.RegisterGeneric(typeof(NhRepository<,>)).As(typeof(IRepository<,>));
         }
     }

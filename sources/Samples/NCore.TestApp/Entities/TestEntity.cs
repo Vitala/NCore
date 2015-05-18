@@ -1,11 +1,7 @@
 ﻿using FluentNHibernate.Mapping;
 using NCore.Domain;
-using NCore.Security.NHibernate.Interfaces;
+using NCore.Security.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NCore.TestApp.Entities
 {

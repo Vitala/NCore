@@ -57,11 +57,11 @@ namespace NCore.Emitter
                     ImplementConstructor(typeBuilder);
                     ImplementInterfaces(_interfaceType, typeBuilder);
 
-                    TypeCache[_interfaceType] = typeBuilder.CreateType();
+                    TypeCache[_interfaceType] = type = typeBuilder.CreateType();
                 }
             }
 
-            return (TInterface) Activator.CreateInstance(type, _scope, _provider);
+            return (TInterface) (type != null ? Activator.CreateInstance(type, _scope, _provider) : null);
         }
 
         private void ImplementInterfaces(Type interfaceType, TypeBuilder typeBuilder)

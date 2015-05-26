@@ -13,5 +13,6 @@ namespace NCore.Domain
         void Insert(TEntity entity);
         void Update(TEntity entity);
         void Delete(TPrimaryKey id);
+        void Delete(TEntity entity);
     }
 }

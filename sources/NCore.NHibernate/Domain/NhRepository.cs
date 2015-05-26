@@ -42,5 +42,10 @@ namespace NCore.NHibernate.Domain
         {
             _session.Delete(_session.Load<TEntity>(id));
         }
+
+        public void Delete(TEntity entity)
+        {
+            _session.Delete(entity);
+        }
     }
 }

@@ -47,6 +47,11 @@ namespace NCore.EntityFramework.Domain
             _set.Remove(_set.Find(id));
         }
 
+        public void Delete(TEntity entity)
+        {
+            _set.Remove(entity);
+        }
+
         protected virtual void AttachIfNot(TEntity entity)
         {
             if (!_set.Local.Contains(entity))

@@ -12,6 +12,10 @@ namespace NCore.Emitter
             b.RegisterGeneric(typeof(EmitUoWInterfaceImplementor<>))
                 .AsSelf()
                 .InstancePerLifetimeScope();
+            
+            b.RegisterGeneric(typeof(EmitRawUoWInterfaceImplementor<>))
+                .AsSelf()
+                .InstancePerLifetimeScope();
         }        
     }
 }

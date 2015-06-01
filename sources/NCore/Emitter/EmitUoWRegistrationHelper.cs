@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using NCore.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 
 namespace NCore.Emitter
@@ -12,45 +11,40 @@ namespace NCore.Emitter
     /// </summary>
     public static class EmitUoWRegistrationHelper
     {
-        private static readonly Dictionary<Type, Func<object, object>> Transformers = new Dictionary<Type, Func<object, object>>();
+        private static readonly ConcurrentDictionary<Type, Func<object, object>> Transformers = new ConcurrentDictionary<Type, Func<object, object>>();
         
         /// <summary>
         /// Зарегистрировать несколько интерфейсов для фабрики интерфейсов
         /// </summary>
         /// <param name="builder">Построитьель контейнера</param>
         /// <param name="types">Интерфейсы для регистрации</param>
-        public static void RegisterInterfacesForEmit(this ContainerBuilder builder,params Type[] types)
+        public static void RegisterInterfacesForEmit(this ContainerBuilder builder, params Type[] types)
         {
-            foreach (var type in types.Where(t => t.IsAssignableTo<IUnitOfWork>()))
-                builder.RegisterInterfaceForEmit(type);
+            for (var i = 0; i < types.Length; ++i)
+                builder.RegisterInterfaceForEmit(types[i]);
         }        
 
         /// <summary>
         /// Зарегистрировать интерфейс для фабрики интерфейсов
         /// </summary>
         /// <param name="builder">Построитель контейнера</param>
-        /// <param name="t">Интерфейс</param>
-        public static void RegisterInterfaceForEmit(this ContainerBuilder builder,Type t)
+        /// <param name="type">Интерфейс</param>
+        public static void RegisterInterfaceForEmit(this ContainerBuilder builder, Type type)
         {
-            if (!t.IsAssignableTo<IUnitOfWork>())
-                throw new ArgumentException("Interface has to be descendant of IUnitOfWork", "t");
+            var factoryType = type.IsAssignableTo<IUnitOfWork>() 
+                ? typeof(EmitUoWInterfaceImplementor<>).MakeGenericType(type)
+                : typeof(EmitRawUoWInterfaceImplementor<>).MakeGenericType(type);
 
-            Func<object,object> function;
-            var factoryType = typeof(EmitUoWInterfaceImplementor<>).MakeGenericType(t);
-
-            if (!Transformers.ContainsKey(t))
+            var function = Transformers.GetOrAdd(type, (Func<Type, Func<object, object>>) (t =>
             {
-                var expression2 = Expression.Parameter(typeof (object), "emi");
+                var parameter = Expression.Parameter(typeof (object), "interfaceType");
                 var methodInfo = factoryType.GetMethod("ImplementInterface");
-                var expression = Expression.Lambda<Func<object, object>>(Expression.Call(Expression.Convert(expression2, factoryType), methodInfo, new Expression[0]), new[] {expression2});
+                var expression = Expression.Lambda<Func<object, object>>(Expression.Call(Expression.Convert(parameter, factoryType), methodInfo), new[] { parameter });
                 
-                function = expression.Compile();
-                Transformers[t] = function;
-            }
-            else
-                function = Transformers[t];
+                return expression.Compile();
+            }));
            
-            builder.Register(c => function(c.Resolve(factoryType))).As(t);
+            builder.Register(c => function(c.Resolve(factoryType))).As(type);
         }
 
         /// <summary>
@@ -58,9 +52,9 @@ namespace NCore.Emitter
         /// </summary>
         /// <typeparam name="T">Интерфейс</typeparam>
         /// <param name="builder">Построитель контейнера</param>
-        public static void RegisterInterfaceForEmit<T>(this ContainerBuilder builder) where T : IUnitOfWork
+        public static void RegisterInterfaceForEmit<T>(this ContainerBuilder builder)
         {
-            builder.Register(c => c.Resolve<EmitUoWInterfaceImplementor<T>>().ImplementInterface()).As<T>();
-        }        
+            builder.RegisterInterfaceForEmit(typeof(T));
+        }     
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="Emitter\EmitUoWInterfaceImplementor.cs" />
     <Compile Include="Emitter\EmitUoWInterfaceImplementorBase.cs" />
     <Compile Include="Emitter\EmitUoWRegistrationHelper.cs" />
+    <Compile Include="Emitter\EmitRawUoWInterfaceImplementor.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
     <Compile Include="Domain\IRepositoryFactory.cs" />
     <Compile Include="Domain\RepositoryFactory.cs" />

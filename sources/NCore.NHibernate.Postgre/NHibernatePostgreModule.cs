@@ -31,7 +31,8 @@ namespace NCore.NHibernate.Postgre
                          .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true));
                         //.ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(false, true, false));
 
-            AfterConfigure(fluentConfiguration);
+            if (AfterConfigure != null)
+                AfterConfigure(fluentConfiguration);
 
             var sessionFactory = fluentConfiguration.BuildSessionFactory();
 

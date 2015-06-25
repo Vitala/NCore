@@ -28,7 +28,7 @@ namespace NCore.Emitter
 
         static EmitRawUoWInterfaceImplementor()
         {
-            BeginScopeMethodInfo = typeof(IAppScope).GetMethod("BeginScope");
+            BeginScopeMethodInfo = typeof(IAppScope).GetMethod("BeginScope", new Type[0]);
             DisposeMethodInfo = typeof(IDisposable).GetMethod("Dispose");
         }
 

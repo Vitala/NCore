@@ -16,6 +16,9 @@ using NHibernate.Tool.hbm2ddl;
 using NCore.Security.NHibernate.Model;
 using NCore.TestApp.Entities;
 using NCore.Security.NHibernate.Interfaces;
+using NCore.FileStorage.NHibernate.Postgre;
+using NCore.FileStorage.NHibernate;
+using NCore.FileStorage.Model;
 
 namespace NCore.TestApp
 {
@@ -28,13 +31,17 @@ namespace NCore.TestApp
             var builder = new ContainerBuilder();
 
             _core = AppCoreBuilder.Create(builder)
+                .AddModule<NCoreFileStorageModule>()
                 .AddModule(new NHibernatePostgreModule()
                 {
                     AssemblyMapper = Assembly.GetExecutingAssembly(),
                     ConnectionStringKey = "ncore-test-base",
                     AfterConfigure = e => {
+
+                        FileStorageCore.Configure(e);
                         SecurityCore.Configure(e);
-           
+                        
+                        
                     }
                 })
                 .AddModule(new NCoreSecurityNHibernateModule())

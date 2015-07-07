@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>NCore.FileStorage.NHibernate.Postgre</id>
+    <version>1.0.0</version>
+    <authors>ООО Интегрикс</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Коллекция базовых компонентов для обеспечения поддержки хранения файлов ядром NCore с использованием ORM NHibernate и БД PostgreSQL</description>
+    <dependencies>
+      <dependency id="FluentNHibernate" version="2.0" />
+      <dependency id="NCore" version="1.0" />
+      <dependency id="NCore.FileStorage" version="1.0" />
+      <dependency id="Newtonsoft.Json" version="7.0" />
+      <dependency id="Npgsql" version="2.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NCore.FileStorage.NHibernate.Postgre\bin\Release\NCore.FileStorage.NHibernate.Postgre.dll" target="lib" />
+  </files>
+</package>

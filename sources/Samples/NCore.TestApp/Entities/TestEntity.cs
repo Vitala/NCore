@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using NCore.Domain;
+using NCore.FileStorage.Model;
 using NCore.Security.Model;
 using System;
 
@@ -13,12 +14,16 @@ namespace NCore.TestApp.Entities
             Map(x => x.Name);
             Map(x => x.SecurityKey);
             Table("Test");
+
+            References(x => x.File);
         }
     }
-
-    public class TestEntity : Entity<int>, IEntityInformationExtractor<TestEntity>
+    
+    public class TestEntity : SingleFileEntity<int>, IEntityInformationExtractor<TestEntity>
     {
         public virtual string Name { get; set; }
         public virtual Guid SecurityKey { get; set; }
+
+        public override FileReference File { get; set; }
     }
 }

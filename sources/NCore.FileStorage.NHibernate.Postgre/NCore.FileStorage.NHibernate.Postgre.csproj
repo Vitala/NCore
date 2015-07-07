@@ -4,18 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CF7A49A7-4772-478E-B46C-26FBEFB2F961}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{70B97EA2-5611-4B10-A6C9-4A6E35135D0F}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCore.TestApp</RootNamespace>
-    <AssemblyName>NCore.TestApp</AssemblyName>
+    <RootNamespace>NCore.FileStorage.NHibernate.Postgre</RootNamespace>
+    <AssemblyName>NCore.FileStorage.NHibernate.Postgre</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +24,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,19 +32,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="FluentNHibernate, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FluentNHibernate, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Mono.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.2.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,56 +65,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Entities\ITestRepository.cs" />
-    <Compile Include="Entities\TestEntity.cs" />
-    <Compile Include="Entities\TestRepository.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="..\NCore\Properties\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="Model\Blobbed.cs" />
+    <Compile Include="Model\FileReferenceMap.cs" />
+    <Compile Include="NpgsqlDriverExtended.cs" />
+    <Compile Include="NpgsqlExtendedSqlType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ITestService.cs" />
-    <Compile Include="Services\TestService.cs" />
+    <Compile Include="FileStorageCore.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NCore.FileStorage.NHibernate.Postgre\NCore.FileStorage.NHibernate.Postgre.csproj">
-      <Project>{70b97ea2-5611-4b10-a6c9-4a6e35135d0f}</Project>
-      <Name>NCore.FileStorage.NHibernate.Postgre</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCore.FileStorage.NHibernate\NCore.FileStorage.NHibernate.csproj">
-      <Project>{4d9710c8-7b45-453f-b9d8-86f1e994abe9}</Project>
-      <Name>NCore.FileStorage.NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCore.FileStorage\NCore.FileStorage.csproj">
+    <ProjectReference Include="..\NCore.FileStorage\NCore.FileStorage.csproj">
       <Project>{9bebd050-a7c2-4207-98ce-83b0e8d740bf}</Project>
       <Name>NCore.FileStorage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NCore.NHibernate.Postgre\NCore.NHibernate.Postgre.csproj">
-      <Project>{3a004c49-6a63-402d-9f67-3c11acd4a3b0}</Project>
-      <Name>NCore.NHibernate.Postgre</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCore.Security.NHibernate\NCore.Security.NHibernate.csproj">
-      <Project>{e3a568c3-25b9-4dab-baec-6791f4444724}</Project>
-      <Name>NCore.Security.NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCore.NHibernate\NCore.NHibernate.csproj">
-      <Project>{41710b37-3d17-4163-89d1-bbe8cb531f6d}</Project>
-      <Name>NCore.NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCore.Security\NCore.Security.csproj">
-      <Project>{9d09a7e6-bce6-442f-aa5d-9dabb25a4e76}</Project>
-      <Name>NCore.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCore\NCore.csproj">
+    <ProjectReference Include="..\NCore\NCore.csproj">
       <Project>{4356c472-cd74-419d-83fe-96d50d196cb0}</Project>
       <Name>NCore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Security\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

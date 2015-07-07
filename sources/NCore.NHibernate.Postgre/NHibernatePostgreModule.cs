@@ -4,6 +4,7 @@ using FluentNHibernate.Cfg.Db;
 using NCore.Domain;
 using NCore.NHibernate.Domain;
 using NHibernate;
+using NHibernate.Driver;
 using NHibernate.Tool.hbm2ddl;
 using System;
 using System.Reflection;
@@ -13,7 +14,12 @@ using Module = Autofac.Module;
 
 namespace NCore.NHibernate.Postgre
 {
-    public class NHibernatePostgreModule : Module
+    public class NHibernatePostgreModule : NHibernatePostgreModule<NpgsqlDriver>
+    {
+
+    }
+
+    public class NHibernatePostgreModule<TDriver> : Module where TDriver : IDriver
     {
         public string ConnectionStringKey { get; set; }
         public Assembly AssemblyMapper { get; set; }
@@ -23,13 +29,16 @@ namespace NCore.NHibernate.Postgre
         {
             var rawConfig = new Configuration();
             rawConfig.SetNamingStrategy(new PostgreSqlNamingStrategy());
+            var pgConf = PostgreSQLConfiguration
+                                .PostgreSQL82.Driver<TDriver>()
+                                .Dialect<CustomPostgreSQLDialect>();
 
             var fluentConfiguration = Fluently.Configure(rawConfig)
-                          .Database(PostgreSQLConfiguration.PostgreSQL82
+                          .Database(pgConf
                           .ConnectionString(c => c.FromConnectionStringWithKey(ConnectionStringKey)))
                           .Mappings(x => x.FluentMappings.AddFromAssembly(AssemblyMapper))
-                         .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true));
-                        //.ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(false, true, false));
+                        .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true));
+                        //.ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false));
 
             if (AfterConfigure != null)
                 AfterConfigure(fluentConfiguration);

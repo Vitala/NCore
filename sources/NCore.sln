@@ -35,6 +35,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{A9F4DE8D-6EFC-4C9A-B38B-1234F3F25FAE}"
 	ProjectSection(SolutionItems) = preProject
 		nuget\NCore.EntityFramework.nuspec = nuget\NCore.EntityFramework.nuspec
+		nuget\NCore.FileStorage.NHibernate.nuspec = nuget\NCore.FileStorage.NHibernate.nuspec
+		nuget\NCore.FileStorage.NHibernate.Postgre.nuspec = nuget\NCore.FileStorage.NHibernate.Postgre.nuspec
+		nuget\NCore.FileStorage.nuspec = nuget\NCore.FileStorage.nuspec
 		nuget\NCore.NHibernate.nuspec = nuget\NCore.NHibernate.nuspec
 		nuget\NCore.NHibernate.Postgre.nuspec = nuget\NCore.NHibernate.Postgre.nuspec
 		nuget\NCore.nuspec = nuget\NCore.nuspec
@@ -42,6 +45,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{A9F4DE8D
 		nuget\NCore.Security.nuspec = nuget\NCore.Security.nuspec
 		nuget\NCore.Web.MVC.nuspec = nuget\NCore.Web.MVC.nuspec
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.FileStorage", "NCore.FileStorage\NCore.FileStorage.csproj", "{9BEBD050-A7C2-4207-98CE-83B0E8D740BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.FileStorage.NHibernate.Postgre", "NCore.FileStorage.NHibernate.Postgre\NCore.FileStorage.NHibernate.Postgre.csproj", "{70B97EA2-5611-4B10-A6C9-4A6E35135D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCore.FileStorage.NHibernate", "NCore.FileStorage.NHibernate\NCore.FileStorage.NHibernate.csproj", "{4D9710C8-7B45-453F-B9D8-86F1E994ABE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +102,18 @@ Global
 		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D09A7E6-BCE6-442F-AA5D-9DABB25A4E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BEBD050-A7C2-4207-98CE-83B0E8D740BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEBD050-A7C2-4207-98CE-83B0E8D740BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BEBD050-A7C2-4207-98CE-83B0E8D740BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BEBD050-A7C2-4207-98CE-83B0E8D740BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70B97EA2-5611-4B10-A6C9-4A6E35135D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B97EA2-5611-4B10-A6C9-4A6E35135D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B97EA2-5611-4B10-A6C9-4A6E35135D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B97EA2-5611-4B10-A6C9-4A6E35135D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D9710C8-7B45-453F-B9D8-86F1E994ABE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D9710C8-7B45-453F-B9D8-86F1E994ABE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D9710C8-7B45-453F-B9D8-86F1E994ABE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D9710C8-7B45-453F-B9D8-86F1E994ABE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

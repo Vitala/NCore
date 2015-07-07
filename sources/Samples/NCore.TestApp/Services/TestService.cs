@@ -1,8 +1,8 @@
-﻿using Autofac.Features.OwnedInstances;
-using NCore.Domain;
+﻿using NCore.Domain;
+using NCore.FileStorage.Model;
+using NCore.FileStorage.NHibernate.Interfaces;
 using NCore.Security.Model;
 using NCore.Security.NHibernate.Interfaces;
-using NCore.Security.NHibernate.Model;
 using NCore.TestApp.Entities;
 using NHibernate;
 using NHibernate.Hql.Ast.ANTLR;
@@ -14,9 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace NCore.TestApp.Services
 {
@@ -28,9 +25,11 @@ namespace NCore.TestApp.Services
         private readonly Func<IAuthorizationRepository> _authRepo;
         private readonly Func<IPermissionsBuilderService> _permBuilderFactory;
         private readonly Func<ITestRepository> _testEntityRepoFactory;
+        private readonly Func<IStorageService<int>> _fileStorageFactory;
 
         public TestService(Func<IUnitOfWork> uowFactory,
             Func<IRepository<User, int>> userRepoFactory,
+            Func<IStorageService<int>> fileStorageFactory,
             Func<IAuthorizationService> authService,
             Func<IAuthorizationRepository> authRepo,
             Func<IPermissionsBuilderService> permBuilderFactory,
@@ -42,6 +41,7 @@ namespace NCore.TestApp.Services
             _authRepo = authRepo;
             _permBuilderFactory = permBuilderFactory;
             _testEntityRepoFactory = testEntityRepoFactory;
+            _fileStorageFactory = fileStorageFactory;
         }
 
         public void AddTestRecord()
@@ -58,10 +58,16 @@ namespace NCore.TestApp.Services
                 var userRepo = _userRepoFactory();
                 var testRepo = _testEntityRepoFactory();
                 var authRepo = _authRepo();
+                var fileStorage = _fileStorageFactory();
 
                 var eg = authRepo.CreateEntitiesGroup("test entities");
                 using (uow.BeginTransaction(TransactionCloseType.Auto))
                 {
+                    fileStorage.AttachFile(ent, "test.txt", new byte[] { 118, 97, 115, 121, 97, 32, 112, 117, 112, 107, 105, 110 }, new Dictionary<string, string>()
+                    {
+                        {"omg", "bbq" }
+                    });
+
                     testRepo.Insert(ent); testRepo.Insert(ent2); testRepo.Insert(ent3);
                     userRepo.Insert(user); userRepo.Insert(user2);
 

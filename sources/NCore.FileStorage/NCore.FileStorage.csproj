@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3A004C49-6A63-402D-9F67-3C11ACD4A3B0}</ProjectGuid>
+    <ProjectGuid>{9BEBD050-A7C2-4207-98CE-83B0E8D740BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCore.NHibernate.Postgre</RootNamespace>
-    <AssemblyName>NCore.NHibernate.Postgre</AssemblyName>
+    <RootNamespace>NCore.FileStorage</RootNamespace>
+    <AssemblyName>NCore.FileStorage</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -32,20 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FluentNHibernate">
-      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,23 +45,20 @@
     <Compile Include="..\NCore\Properties\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="CustomPostgreSQLDialect.cs" />
-    <Compile Include="PostgreSqlNamingStrategy.cs" />
-    <Compile Include="NHibernatePostgreModule.cs" />
+    <Compile Include="Configuration\FileStorageConfiguration.cs" />
+    <Compile Include="Configuration\IFileStorageConfiguration.cs" />
+    <Compile Include="Model\FileStorageModes.cs" />
+    <Compile Include="Model\MultiFileEntity.cs" />
+    <Compile Include="Model\SingleFileEntity.cs" />
+    <Compile Include="Model\FileReference.cs" />
+    <Compile Include="NCoreFileStorageException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NCore.NHibernate\NCore.NHibernate.csproj">
-      <Project>{41710b37-3d17-4163-89d1-bbe8cb531f6d}</Project>
-      <Name>NCore.NHibernate</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NCore\NCore.csproj">
       <Project>{4356c472-cd74-419d-83fe-96d50d196cb0}</Project>
       <Name>NCore</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

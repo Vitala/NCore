@@ -37,8 +37,9 @@ namespace NCore.FileStorage.NHibernate.Services
         {
             if (entity.File != null)
             {
-                File.Delete(entity.File.FilePath);
-                var dir = Path.GetDirectoryName(entity.File.FilePath);
+                var path = Path.Combine(entity.File.Directory, entity.File.RelativePath);
+                File.Delete(path);
+                var dir = Path.GetDirectoryName(path);
                 Directory.Delete(dir);
                 entity.File = null;
             }
@@ -49,10 +50,12 @@ namespace NCore.FileStorage.NHibernate.Services
             CheckDirectoryValidity();
             CheckAndRemoveOldFiles(entity);
 
-            var subdir = Path.Combine(_config.Directory, Guid.NewGuid().ToString());
-            if (!Directory.Exists(subdir))
-                Directory.CreateDirectory(subdir);
-            var path = Path.Combine(subdir, fileName);
+            var guid = Guid.NewGuid().ToString();
+            var directory = Path.Combine(_config.Directory, guid);
+          
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            var path = Path.Combine(directory, fileName);
             File.WriteAllBytes(path, content);
 
             var fileData = new FileReference()
@@ -60,7 +63,8 @@ namespace NCore.FileStorage.NHibernate.Services
                 DateUploaded = DateTime.Now,
                 Metadata = metadata,
                 Mode = FileStorageModes.FileSystem,
-                FilePath = path
+                Directory = _config.Directory,
+                RelativePath = Path.Combine(guid, fileName)
             };
             _session.Save(fileData);
             entity.File = fileData;

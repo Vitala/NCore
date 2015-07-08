@@ -10,7 +10,8 @@ namespace NCore.FileStorage.NHibernate.Postgre.Model
         {
             Table("FileReferences");
             Id(x => x.Id);
-            Map(x => x.FilePath);
+            Map(x => x.Directory);
+            Map(x => x.RelativePath);
             Map(x => x.DateUploaded);
             Map(x => x.Mode).CustomType<FileStorageModes>();
             Map(x => x.Metadata).CustomType<Blobbed<Dictionary<string, string>>>();

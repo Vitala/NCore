@@ -37,11 +37,21 @@ namespace NCore.FileStorage.NHibernate.Services
         {
             if (entity.File != null)
             {
-                var path = Path.Combine(entity.File.Directory, entity.File.RelativePath);
-                File.Delete(path);
-                var dir = Path.GetDirectoryName(path);
-                Directory.Delete(dir);
-                entity.File = null;
+                try
+                {
+                    var path = Path.Combine(entity.File.Directory, entity.File.RelativePath);
+                    File.Delete(path);
+                    var dir = Path.GetDirectoryName(path);
+                    Directory.Delete(dir);
+                }
+                catch (DirectoryNotFoundException)
+                {
+
+                }
+                finally
+                {
+                    entity.File = null;
+                }
             }
         }
 
